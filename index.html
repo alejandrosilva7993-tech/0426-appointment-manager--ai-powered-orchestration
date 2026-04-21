@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASCEND · AI-Powered Orchestration</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeng@17.18.0/resources/themes/lara-light-blue/theme.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeng@17.18.0/resources/primeng.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@7.0.0/primeicons.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue-50:#f0f5ff;--blue-100:#dce8ff;--blue-200:#bfdbfe;--blue-300:#93c5fd;
+  --blue-400:#60a5fa;--blue-500:#3b82f6;--blue-600:#2563eb;--blue-700:#1d4ed8;--blue-800:#1e40af;
+  --s0:#ffffff;--s50:#f8fafc;--s100:#f1f5f9;--s150:#edf2f7;--s200:#e2e8f0;--s300:#cbd5e1;
+  --s400:#94a3b8;--s500:#64748b;--s600:#475569;--s700:#334155;--s800:#1e293b;--s900:#0f172a;
+  --am50:#fffbf0;--am100:#fef3d0;--am400:#e8a020;--am500:#cc8800;--am600:#b07300;--am700:#8f5c00;
+  --or400:#fb923c;--or500:#f97316;--or600:#ea580c;--or700:#c2410c;
+  --gn50:#f4faf6;--gn100:#e2f0e8;--gn400:#6b9e78;--gn500:#528a6a;--gn600:#3a6b4f;--gn700:#2d5340;
+  --rd50:#fff4f4;--rd100:#fde0e0;--rd400:#f87171;--rd500:#d94040;--rd600:#b83030;--rd700:#942a2a;
+  --pu50:#faf5ff;--pu200:#e9d5ff;--pu700:#6b21a8;
+  --ff:'Roboto',sans-serif;
+  --sh1:0 1px 2px rgba(15,23,42,.06),0 1px 3px rgba(15,23,42,.1);
+  --r6:6px;--r8:8px;--r12:12px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff);background:linear-gradient(160deg,#dce9f7 0%,#b8cfe5 100%);
+  color:var(--s700);min-height:100vh;font-size:13px;display:flex;flex-direction:column}
+.content-wrap{flex:1;display:flex;flex-direction:column;min-width:0}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 22px;height:54px;
+  background:#fff;border-bottom:1px solid var(--s200);box-shadow:0 1px 4px rgba(15,23,42,.08);
+  position:sticky;top:0;z-index:100}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-name{font-size:13px;font-weight:700;color:var(--s700);letter-spacing:.5px}
+.vsep{width:1px;height:20px;background:var(--s200)}
+.nav-r{display:flex;align-items:center;gap:8px}
+.snap-badge{display:flex;align-items:center;gap:6px;padding:5px 11px;border-radius:20px;
+  background:var(--gn50);border:1px solid rgba(82,138,106,.25);font-size:13px;font-weight:700;color:var(--gn600)}
+.sdot{width:7px;height:7px;border-radius:50%;background:var(--gn500);
+  box-shadow:0 0 0 0 rgba(82,138,106,.4);animation:sdot-pulse 2s infinite}
+@keyframes sdot-pulse{0%{box-shadow:0 0 0 0 rgba(82,138,106,.4)}
+  70%{box-shadow:0 0 0 6px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.btn-o{padding:5px 12px;border-radius:var(--r6);border:1px solid var(--s300);background:#fff;
+  color:var(--s600);font-size:13px;font-weight:700;cursor:pointer;font-family:var(--ff);
+  display:inline-flex;align-items:center;gap:5px;transition:all .15s}
+.btn-o:hover{border-color:var(--blue-400);color:var(--blue-600);background:var(--blue-50)}
+
+/* STEPPER */
+.steps-wrap{background:#f1f5f9;border-bottom:1px solid var(--s200)}
+.steps-inner{max-width:1280px;margin:0 auto;padding:0 22px}
+.p-steps{display:flex;align-items:center;gap:0;padding:0;width:100%}
+.p-steps-item{display:flex;align-items:center;position:relative}
+.p-steps-sep{flex:1;height:1px;background:var(--s200);min-width:20px;align-self:center}
+.p-steps-item.done + .p-steps-sep{background:var(--blue-300)}
+.p-steps-link{display:flex;align-items:center;gap:7px;padding:14px 10px;height:52px;
+  text-decoration:none;border-bottom:3px solid transparent;transition:background .2s,color .2s,border-color .2s;
+  white-space:nowrap;color:inherit;box-sizing:border-box}
+.p-steps-link--static{cursor:default;pointer-events:none}
+.p-steps-item:has(.p-steps-link--static){cursor:default}
+.p-steps-item.done .p-steps-link{color:var(--s500)}
+.p-steps-item.active .p-steps-link{color:var(--blue-600);background:rgba(59,130,246,.07)!important;border-bottom-color:var(--blue-600)}
+.p-steps-item:not(.done):not(.active) .p-steps-link{color:var(--s400)}
+.p-steps-number{width:24px;height:24px;border-radius:50%;font-size:12px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.p-steps-item:not(.done):not(.active) .p-steps-number{background:var(--s100);color:var(--s400);border:1.5px solid var(--s300)}
+.p-steps-item.done .p-steps-number{background:var(--blue-100);color:var(--blue-600);border:1.5px solid var(--blue-200)}
+.p-steps-item.done .p-steps-number .pi-check{font-size:13px}
+.p-steps-item.active .p-steps-number{background:var(--blue-600);color:#fff;border:1.5px solid var(--blue-600);box-shadow:0 0 0 3px rgba(59,130,246,.2)}
+.p-steps-title{font-size:13px;font-weight:700;line-height:1.2}
+.p-steps-item.active .p-steps-title{font-weight:800}
+.p-steps .p-steps-item::before,.p-steps .p-steps-item::after{content:none!important;display:none!important;border:none!important;background:none!important}
+
+/* MAIN */
+.main{flex:1;padding:22px 22px 28px;display:flex;flex-direction:column;gap:14px;max-width:1280px;margin:0 auto;width:100%}
+
+/* HERO */
+.hero-card{background:linear-gradient(135deg,var(--blue-50) 0%,#fff 55%);border:1px solid var(--blue-200);
+  border-radius:var(--r12);padding:18px 22px;box-shadow:var(--sh1);display:flex;flex-wrap:wrap;
+  align-items:flex-start;justify-content:space-between;gap:14px}
+.hero-card h1{font-size:18px;font-weight:800;color:var(--s900);letter-spacing:-.02em;margin-bottom:6px}
+.hero-card p{font-size:14px;color:var(--s600);line-height:1.5;max-width:640px}
+.pill-hitmap{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;
+  background:var(--am50);border:1px solid rgba(245,158,11,.35);font-size:12px;font-weight:700;color:var(--am700)}
+.pill-hitmap i{color:var(--or500)}
+
+/* KPI ROW */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:960px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.kpi-grid{grid-template-columns:1fr}}
+.kpi{background:var(--s0);border:1px solid var(--s200);border-radius:var(--r12);padding:14px 18px;box-shadow:var(--sh1);display:flex;flex-direction:column;gap:0}
+.kpi-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+.kpi-icon{width:36px;height:36px;border-radius:var(--r8);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;line-height:1}
+.kpi-icon--blue{background:var(--blue-100);color:var(--blue-600)}
+.kpi-icon--or{background:rgba(249,115,22,.12);color:var(--or600)}
+.kpi-icon--gn{background:var(--gn100);color:var(--gn600)}
+.kpi-icon--sl{background:var(--s100);color:var(--s500)}
+.kpi-label{font-size:12px;font-weight:700;color:var(--s500);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.kpi-value{font-size:24px;font-weight:900;color:var(--s800);font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi-sub{font-size:12px;color:var(--s500);margin-top:6px;font-weight:600}
+.kpi--hitl .kpi-value{color:var(--or600)}
+.kpi--hitl .kpi-sub{color:var(--am700)}
+.kpi-bar-wrap{height:4px;background:var(--s100);border-radius:2px;margin-top:10px;overflow:hidden}
+.kpi-bar{height:100%;border-radius:2px;background:var(--blue-500);transition:width .4s ease}
+
+/* CARD SHARED */
+.card{background:var(--s0);border:1px solid var(--s200);border-radius:var(--r12);box-shadow:var(--sh1);overflow:hidden}
+.ch{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  padding:11px 18px;border-bottom:1px solid var(--s200);background:var(--s50)}
+.ct{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--s600);text-transform:uppercase;letter-spacing:.04em}
+.ct i{font-size:13px;color:inherit;opacity:.75}
+.ct .acc{width:3px;height:14px;border-radius:2px;background:var(--blue-600);flex-shrink:0}
+.cb{padding:18px}
+
+/* TIMELINE (compact strip) */
+.tl-legend{display:inline-flex;flex-wrap:wrap;gap:4px 14px;font-size:11.5px;font-weight:600;color:var(--s500);align-items:center}
+.tl-legend span{display:inline-flex;align-items:center;gap:5px}
+.tl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.tl-dot--auto{background:var(--blue-400)}
+.tl-dot--hitl{background:var(--or400)}
+.tl-dot--done{background:var(--gn500)}
+.tl-track-wrap{padding:14px 18px 16px}
+.tl-track{display:flex;align-items:flex-start;position:relative}
+.tl-track::before{content:'';position:absolute;top:13px;left:14px;right:14px;height:1.5px;background:var(--s200);z-index:0}
+.tl-milestone{display:flex;flex-direction:column;align-items:center;flex:1;gap:7px;position:relative;z-index:1}
+.tl-node{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;background:var(--s0);border:1.5px solid var(--s200);color:var(--s400)}
+.tl-node--done{background:var(--gn50);border-color:rgba(82,138,106,.35);color:var(--gn600)}
+.tl-node--auto{background:var(--blue-50);border-color:var(--blue-200);color:var(--blue-600)}
+.tl-node--hitl-done{background:rgba(249,115,22,.07);border-color:rgba(249,115,22,.3);color:var(--or600)}
+.tl-node--hitl-wait{background:var(--am50);border-color:rgba(204,136,0,.3);color:var(--am600)}
+.tl-node--pending{background:var(--s50);border-color:var(--s200);color:var(--s300)}
+.tl-node-label{text-align:center;width:100%;padding:0 1px}
+.tl-node-name{font-size:11px;font-weight:700;color:var(--s600);line-height:1.3}
+.tl-milestone--done .tl-node-name{color:var(--gn600)}
+.tl-milestone--auto .tl-node-name{color:var(--blue-600)}
+.tl-milestone--hitl-done .tl-node-name{color:var(--or700)}
+.tl-milestone--hitl-wait .tl-node-name{color:var(--am600)}
+.tl-now-pill{display:inline-flex;align-items:center;gap:3px;margin-top:2px;
+  background:var(--blue-50);border:1px solid var(--blue-200);color:var(--blue-600);
+  font-size:9.5px;font-weight:800;padding:1px 6px;border-radius:20px;letter-spacing:.04em;white-space:nowrap}
+
+/* HITL WORKBENCH (single component, two panes) */
+.hitl-workbench{display:flex;flex-direction:column;overflow:hidden}
+.hitl-workbench .hitl-workbench__head{align-items:flex-start}
+@media(min-width:901px){.hitl-workbench .hitl-workbench__head{align-items:center}}
+.hitl-workbench__titleblock{min-width:0}
+.hitl-workbench__sub{font-size:12px;color:var(--s500);font-weight:600;margin-top:6px;line-height:1.35;padding-left:11px}
+.hitl-workbench__body{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,380px);gap:0;align-items:stretch;min-height:360px}
+@media(max-width:900px){.hitl-workbench__body{grid-template-columns:1fr}}
+.hitl-workbench__left{border-right:1px solid var(--s200);display:flex;flex-direction:column;min-width:0;background:var(--s0)}
+@media(max-width:900px){.hitl-workbench__left{border-right:none;border-bottom:1px solid var(--s200)}}
+.hitl-workbench__right{display:flex;flex-direction:column;min-width:0;background:var(--s50)}
+.hitl-hint{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;margin:16px 18px 0;
+  background:var(--blue-50);border:1px solid var(--blue-200);border-radius:var(--r8);
+  font-size:13px;color:var(--blue-800);line-height:1.45;font-weight:600}
+.hitl-hint i{color:var(--blue-600);margin-top:2px;flex-shrink:0}
+.hitl-table-wrap{padding:12px 0 0;overflow-x:auto;flex:1}
+.hitl-pane-head{display:flex;align-items:center;gap:8px;padding:11px 18px;border-bottom:1px solid var(--s200);
+  background:var(--s50);font-size:12px;font-weight:800;color:var(--s600);text-transform:uppercase;letter-spacing:.04em}
+.hitl-inner{padding:18px;display:flex;flex-direction:column;flex:1;min-height:0}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.orch-table{width:100%;border-collapse:collapse;font-size:13px}
+.orch-table th{text-align:left;padding:10px 12px;background:var(--s50);border-bottom:1px solid var(--s200);
+  font-size:11px;font-weight:800;color:var(--s500);text-transform:uppercase;letter-spacing:.04em}
+.orch-table .th-check{width:48px;text-align:center}
+.orch-table td{padding:12px;border-bottom:1px solid var(--s200);vertical-align:middle}
+.orch-table .cell-check{text-align:center;width:48px;vertical-align:middle}
+.orch-table .cell-check input[type=radio]{width:18px;height:18px;cursor:pointer;accent-color:var(--blue-600)}
+.orch-table tbody tr{cursor:pointer;transition:background .12s}
+.orch-table tbody tr:hover{background:var(--blue-50)}
+.orch-table tbody tr.is-selected{background:var(--blue-100);outline:2px solid var(--blue-300);outline-offset:-2px}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800;
+  letter-spacing:.02em}
+.tag--danger{background:var(--rd50);color:var(--rd600);border:1px solid rgba(217,64,64,.25)}
+.tag--warn{background:var(--am50);color:var(--am700);border:1px solid rgba(204,136,0,.3)}
+.tag--info{background:var(--blue-50);color:var(--blue-700);border:1px solid var(--blue-200)}
+.tag--hitl{background:rgba(249,115,22,.12);color:var(--or700);border:1px solid rgba(249,115,22,.35)}
+.tag--ok{background:var(--gn50);color:var(--gn600);border:1px solid rgba(82,138,106,.3)}
+.detail-panel{min-height:280px}
+.detail-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  padding:22px;color:var(--s500);font-size:14px;font-weight:600;gap:8px}
+.detail-empty i{font-size:2rem;color:var(--s300)}
+.detail-body{display:none;flex-direction:column;gap:14px}
+.detail-body.is-visible{display:flex}
+.detail-block{background:var(--s50);border:1px solid var(--s200);border-radius:var(--r8);padding:14px}
+.detail-block h4{font-size:12px;font-weight:800;color:var(--s500);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+.detail-block p{font-size:13px;line-height:1.5;color:var(--s700)}
+.ai-box{border-left:3px solid var(--blue-500);padding-left:12px}
+.ai-box strong{display:block;font-size:11px;color:var(--blue-600);text-transform:uppercase;margin-bottom:4px}
+.detail-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;align-items:center}
+/* HITL actions — shell aligned to Migration Path Planning .btn-gen / .btn-sec; colors: green / red / gray */
+.btn-hitl-approve,.btn-hitl-reject{padding:9px 16px;border-radius:var(--r6);border:none;color:#fff;
+  font-size:13px;font-weight:800;font-family:var(--ff);cursor:pointer;display:inline-flex;align-items:center;gap:8px;
+  transition:background .15s,box-shadow .15s,transform .15s}
+.btn-hitl-approve{background:var(--gn600);box-shadow:0 4px 12px rgba(58,107,79,.32)}
+.btn-hitl-approve:hover:not(:disabled){background:var(--gn700);box-shadow:0 6px 18px rgba(45,83,64,.4);transform:translateY(-1px)}
+.btn-hitl-reject{background:var(--rd600);box-shadow:0 4px 12px rgba(184,48,48,.28)}
+.btn-hitl-reject:hover:not(:disabled){background:var(--rd700);box-shadow:0 6px 18px rgba(148,42,42,.38);transform:translateY(-1px)}
+.btn-hitl-approve:disabled,.btn-hitl-reject:disabled{opacity:.45;cursor:not-allowed;box-shadow:none;transform:none}
+.btn-hitl-info{padding:8px 14px;border-radius:var(--r6);border:1px solid var(--s300);background:#fff;color:var(--s600);
+  font-size:13px;font-weight:700;font-family:var(--ff);cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .15s}
+.btn-hitl-info:hover:not(:disabled){border-color:var(--blue-400);color:var(--blue-600);background:var(--blue-50)}
+.btn-hitl-info:disabled{opacity:.4;cursor:not-allowed}
+.btn-hitl-approve i,.btn-hitl-reject i,.btn-hitl-info i{font-size:14px}
+
+.activity-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.activity-list li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--s700);line-height:1.45}
+.activity-list li i{color:var(--blue-500);margin-top:2px}
+.activity-meta{font-size:12px;color:var(--s500);font-weight:600}
+
+/* SECTION HEADERS (same pattern as Planning .conn-section / .conn-section-title) */
+.conn-section{display:flex;flex-direction:column;gap:10px;width:100%;min-width:0}
+.conn-section-head{padding:0 2px}
+.conn-section-title{font-size:13px;font-weight:800;color:var(--s800);letter-spacing:.55px;text-transform:uppercase;margin:0;line-height:1.25}
+
+/* AUTHORIZATION SPLIT GRID */
+.auth-split-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch;width:100%;min-width:0}
+@media(max-width:900px){.auth-split-grid{grid-template-columns:1fr}}
+/* AUTHORIZATION CARD */
+.auth-card-body{display:flex;flex-direction:column}
+.auth-validations{display:flex;gap:8px;flex-wrap:wrap;padding:11px 16px;border-bottom:1px solid var(--s100);background:var(--s50)}
+.auth-val-item{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:20px;white-space:nowrap}
+.auth-val--pass{background:var(--gn50);color:var(--gn600)}
+.auth-val--warn{background:var(--am50);color:var(--am700)}
+.auth-groups{display:flex;flex-direction:column}
+.auth-group-row{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--s100)}
+.auth-group-row:last-child{border-bottom:none}
+.auth-group-icon{width:32px;height:32px;border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.auth-group-icon--blue{background:var(--blue-50);color:var(--blue-600)}
+.auth-group-icon--or{background:rgba(249,115,22,.12);color:var(--or600)}
+.auth-group-icon--gn{background:var(--gn50);color:var(--gn600)}
+.auth-group-icon--pu{background:var(--pu50);color:var(--pu700)}
+.auth-group-icon--sl{background:var(--s100);color:var(--s500)}
+.auth-group-info{display:flex;flex-direction:column;gap:1px;flex:1;min-width:0}
+.auth-group-name{font-size:13px;font-weight:700;color:var(--s800)}
+.auth-group-meta{font-size:11.5px;color:var(--s400)}
+/* PROCEED CTA */
+.auth-summary-body{display:flex;flex-direction:column;gap:0}
+.auth-val-row{display:flex;align-items:center;gap:10px;padding:9px 16px;border-bottom:1px solid var(--s100);font-size:12.5px;font-weight:600}
+.auth-val-row:last-child{border-bottom:none}
+.auth-val-row i{font-size:13px;flex-shrink:0}
+.auth-val-row--pass{color:var(--gn600)}
+.auth-val-row--warn{color:var(--am700)}
+.auth-group-counts{display:flex;flex-direction:column;gap:6px;padding:14px 16px;border-top:1px solid var(--s100);background:var(--s50)}
+.auth-count-row{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:600}
+.auth-count-num{font-size:15px;font-weight:900;font-variant-numeric:tabular-nums}
+.auth-proceed-footer{padding:14px 16px;border-top:1px solid var(--s100);background:var(--s50)}
+.btn-proceed{padding:13px 16px;border-radius:var(--r8);border:none;background:var(--blue-600);color:#fff;
+  font-size:13px;font-weight:900;font-family:var(--ff);cursor:pointer;transition:all .2s;width:100%;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 4px 14px rgba(37,99,235,.35)}
+.btn-proceed i{font-size:15px}
+.btn-proceed:hover:not(:disabled){background:var(--blue-700);box-shadow:0 6px 20px rgba(37,99,235,.45);transform:translateY(-1px)}
+.btn-proceed:disabled{opacity:.55;cursor:not-allowed;background:var(--s400);color:#fff;box-shadow:none;transform:none}
+.auth-proceed-hint{display:flex;align-items:center;gap:7px;margin-top:9px;font-size:12px;font-weight:600;color:var(--s500)}
+.auth-proceed-hint i{font-size:13px;color:var(--s400)}
+
+/* HITL GROUP SELECTOR (left panel) */
+.hitl-group-list{display:flex;flex-direction:column;flex:1;overflow-y:auto}
+/* group list as grid table */
+.hitl-group-cols{display:grid;grid-template-columns:16px 1fr 80px 44px 160px;gap:0 16px;align-items:center}
+.hitl-group-list-header{padding:7px 18px;border-bottom:2px solid var(--s200);background:var(--s50)}
+.hitl-group-list-header span{font-size:10.5px;font-weight:700;color:var(--s400);text-transform:uppercase;letter-spacing:.05em}
+.hitl-group-list-header span:nth-child(3),.hitl-group-list-header span:nth-child(4){text-align:center}
+.hitl-group-col-val{font-size:12px;color:var(--s500);font-weight:400;font-variant-numeric:tabular-nums;text-align:center}
+.hitl-group-item{padding:10px 18px;cursor:pointer;
+  border-bottom:1px solid var(--s100);border-left:3px solid transparent;transition:background .12s,border-color .12s}
+.hitl-group-item:last-child{border-bottom:none}
+.hitl-group-item:hover{background:var(--blue-50)}
+.hitl-group-item.selected{background:var(--blue-50);border-left-color:var(--blue-500)}
+.hitl-group-radio{width:15px;height:15px;accent-color:var(--blue-600);cursor:pointer;flex-shrink:0}
+.hitl-group-item-name{font-size:13px;font-weight:700;color:var(--s800);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hitl-group-badge{display:inline-flex;align-items:center;gap:4px;
+  font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.hitl-group-badge--pending{background:var(--am50);color:var(--am700);border:1px solid rgba(204,136,0,.3)}
+.hitl-group-badge--danger{background:var(--rd50);color:var(--rd600);border:1px solid rgba(217,64,64,.2)}
+.hitl-group-badge--clear{background:var(--gn50);color:var(--gn600);border:1px solid rgba(82,138,106,.3)}
+.hitl-group-badge--muted{background:var(--s100);color:var(--s500);border:1px solid var(--s200)}
+/* criticality inline text in meta */
+.hitl-crit-text--critical{color:var(--rd500);font-weight:700}
+.hitl-crit-text--high{color:var(--or600);font-weight:700}
+.hitl-crit-text--medium{color:var(--am600);font-weight:700}
+.hitl-crit-text--low{color:var(--s400);font-weight:600}
+/* single status indicator */
+.hitl-group-status{font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px;flex-shrink:0;white-space:nowrap}
+.hitl-group-status--danger{color:var(--rd600)}
+.hitl-group-status--warn{color:var(--am700)}
+.hitl-group-status--ok{color:var(--gn600)}
+.hitl-group-status--none{color:var(--s500)}
+/* HITL GROUP DETAIL (right panel) */
+.hitl-group-detail-outer{display:flex;flex-direction:column;flex:1;overflow:hidden}
+.hitl-group-detail-head{padding:11px 16px;border-bottom:1px solid var(--s200);
+  background:var(--s0);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.hitl-group-detail-title{font-size:13px;font-weight:800;color:var(--s800)}
+.hitl-group-detail-meta{font-size:11.5px;color:var(--s500);margin-left:auto;font-weight:600}
+.hitl-group-detail-scroll{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.hitl-exc-list{display:flex;flex-direction:column;gap:8px}
+.hitl-exc-card{background:var(--s0);border:1px solid var(--s200);border-radius:var(--r8);padding:12px 14px;transition:opacity .2s}
+.hitl-exc-card.resolved{opacity:.65}
+.hitl-exc-card-head{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px}
+.hitl-exc-card-obj{font-size:13px;font-weight:700;color:var(--s800);flex:1;min-width:0}
+.hitl-exc-card-sub{font-size:11.5px;color:var(--s500);margin-top:2px;font-weight:600}
+.hitl-exc-context{font-size:12.5px;color:var(--s600);line-height:1.45;margin-bottom:8px}
+.hitl-exc-ai{background:var(--blue-50);border:1px solid var(--blue-200);border-radius:var(--r6);
+  padding:8px 12px;margin-bottom:10px;font-size:12px;line-height:1.45;color:var(--s700)}
+.hitl-exc-ai strong{display:block;color:var(--blue-700);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.hitl-exc-actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.hitl-group-action-footer{border-top:1px solid var(--s200);padding:14px 0 4px;margin-top:4px}
+/* per-item annotation */
+.hitl-exc-annotation{margin-bottom:8px}
+.hitl-exc-annot-label{display:block;font-size:11px;font-weight:700;color:var(--s500);
+  text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px}
+.hitl-exc-annot-ta{width:100%;padding:8px 11px;border:1px solid var(--s300);
+  border-radius:var(--r6);font-family:var(--ff);font-size:12.5px;resize:vertical;
+  line-height:1.45;color:var(--s700);box-sizing:border-box;min-height:52px}
+.hitl-exc-annot-ta:focus{outline:none;border-color:var(--blue-400);box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.hitl-exc-annotation-done{margin-bottom:8px;padding:7px 10px;background:var(--s50);
+  border-radius:var(--r6);border:1px solid var(--s200)}
+.hitl-exc-annot-text{font-size:12.5px;color:var(--s600);line-height:1.4;display:block;margin-top:3px}
+.hitl-exc-annot-empty{font-size:12px;color:var(--s400);font-style:italic}
+/* group stats pills */
+.hitl-group-detail-stats{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.hitl-stat-pill{display:inline-flex;align-items:center;font-size:11px;font-weight:700;
+  padding:3px 9px;border-radius:20px}
+.hitl-stat-pill--pending{background:var(--am50);color:var(--am700);border:1px solid rgba(204,136,0,.25)}
+.hitl-stat-pill--ok{background:var(--gn50);color:var(--gn600);border:1px solid rgba(82,138,106,.25)}
+.hitl-stat-pill--rej{background:var(--rd50);color:var(--rd600);border:1px solid rgba(217,64,64,.2)}
+/* OBJECTS MODAL */
+.obj-modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:2000;align-items:center;justify-content:center}
+.obj-modal-overlay.open{display:flex}
+.obj-modal{background:#fff;border-radius:var(--r12);box-shadow:0 20px 60px rgba(15,23,42,.22);width:560px;max-width:calc(100vw - 32px);max-height:80vh;display:flex;flex-direction:column;overflow:hidden}
+.obj-modal-hd{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--s200);background:var(--s50);flex-shrink:0}
+.obj-modal-title{font-size:13px;font-weight:800;color:var(--s800);text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:8px}
+.obj-modal-close{width:28px;height:28px;border-radius:50%;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--s500);font-size:14px;transition:background .15s}
+.obj-modal-close:hover{background:var(--s100);color:var(--s700)}
+.obj-modal-body{overflow-y:auto;flex:1}
+.obj-modal-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.obj-modal-table th{text-align:left;padding:8px 20px;font-size:11px;font-weight:700;color:var(--s400);text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid var(--s200);background:var(--s50);position:sticky;top:0}
+.obj-modal-table td{padding:9px 20px;border-bottom:1px solid var(--s100);color:var(--s700);vertical-align:middle}
+.obj-modal-table tr:last-child td{border-bottom:none}
+.obj-modal-table tr:hover td{background:var(--s50)}
+.obj-link{color:var(--blue-600);font-weight:600;font-size:12px;text-decoration:none;cursor:pointer;border:none;background:none;padding:0;font-family:var(--ff)}
+.obj-link:hover{text-decoration:underline}
+/* TOAST */
+.toast-orch{display:none;position:fixed;top:24px;right:24px;z-index:3000;
+  background:#f0fdf4;
+  border:1px solid #bbf7d0;
+  border-left:4px solid #22c55e;
+  border-radius:var(--r8);
+  box-shadow:0 4px 20px rgba(15,23,42,.12);
+  min-width:300px;max-width:380px;
+  padding:14px 16px;
+  flex-direction:row;align-items:flex-start;gap:12px;
+  animation:toast-slide-in .25s ease}
+@keyframes toast-slide-in{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
+.toast-orch.show{display:flex}
+.toast-orch.is-warn{background:#fffbeb;border-color:#fde68a;border-left-color:#eab308}
+.toast-orch.is-danger{background:#fef2f2;border-color:#fecaca;border-left-color:#ef4444}
+.toast-icon-ok{font-size:1.4rem;flex-shrink:0;color:#22c55e;margin-top:1px}
+.toast-orch.is-warn .toast-icon-ok{color:#ca8a04}
+.toast-orch.is-danger .toast-icon-ok{color:#ef4444}
+.toast-orch-text{display:flex;flex-direction:column;gap:2px;min-width:0}
+.toast-orch-hd{font-size:13px;font-weight:700;color:#14532d}
+.toast-orch.is-warn .toast-orch-hd{color:#713f12}
+.toast-orch.is-danger .toast-orch-hd{color:#7f1d1d}
+.toast-orch-msg{font-size:12.5px;color:#166534;font-weight:400;line-height:1.45}
+.toast-orch.is-warn .toast-orch-msg{color:#854d0e}
+.toast-orch.is-danger .toast-orch-msg{color:#991b1b}
+
+/* FAB AI Assistant */
+.fab-ai-wrap{position:fixed;top:130px;right:24px;z-index:1000;display:flex;flex-direction:column;
+  align-items:flex-end;gap:4px;pointer-events:none;width:min-content}
+.fab-ai-badge{position:absolute;top:-4px;right:-4px;width:18px;height:18px;z-index:1;
+  border-radius:50%;background:var(--gn500);border:2px solid #fff;
+  opacity:0;visibility:hidden;pointer-events:none;
+  animation:fab-badge-pulse .4s ease-out}
+.fab-ai-badge.show{opacity:1;visibility:visible}
+@keyframes fab-badge-pulse{0%{opacity:0;transform:scale(0)}70%{transform:scale(1.2)}100%{opacity:1;transform:scale(1)}}
+.fab-ai-btn.shake{animation:fab-ai-shake .5s ease-in-out}
+@keyframes fab-ai-shake{0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-4px)}20%,40%,60%,80%{transform:translateX(4px)}}
+.fab-ai-btn{position:relative;width:46px;height:46px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,#f97316 0%,#E85D04 50%,#c2410c 100%);
+  box-shadow:0 0 0 5px rgba(232,93,4,.35);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:24px;transition:transform .2s;font-family:var(--ff);pointer-events:auto;flex-shrink:0}
+.fab-ai-btn::before{content:'';position:absolute;top:50%;left:50%;width:180px;height:180px;
+  transform:translate(-50%,-50%);border-radius:50%;pointer-events:none}
+.fab-ai-icon{filter:brightness(0) invert(1);object-fit:contain}
+.fab-ai-btn:hover{transform:scale(1.08)}
+.fab-ai-btn:focus{outline:none;box-shadow:0 0 0 5px rgba(232,93,4,.5)}
+.fab-ai-bubbles{position:absolute;top:100%;right:0;padding-top:8px;margin-top:0;display:flex;flex-direction:column;align-items:flex-end;gap:8px;
+  opacity:0;visibility:hidden;transform:translateY(10px);
+  transition:opacity .25s,visibility .25s,transform .25s;transition-delay:.5s;
+  pointer-events:none;min-width:max-content}
+.fab-ai-btn:hover + .fab-ai-bubbles,.fab-ai-bubbles:hover{opacity:1;visibility:visible;transform:translateY(0);
+  transition-delay:0s;pointer-events:auto}
+.fab-ai-wrap.has-notification .fab-ai-btn:hover + .fab-ai-bubbles,
+.fab-ai-wrap.has-notification .fab-ai-bubbles:hover{opacity:0;visibility:hidden;pointer-events:none}
+.fab-bubble{background:#fff;border:1px solid var(--s200);border-radius:12px;
+  padding:12px 18px;font-size:14px;font-weight:400;color:var(--s700);font-family:var(--ff);
+  cursor:pointer;text-align:right;white-space:nowrap;box-shadow:0 4px 20px rgba(15,23,42,.14);
+  transition:background .15s,border-color .15s,color .15s}
+.fab-bubble:hover{background:var(--blue-50);border-color:var(--blue-200);color:var(--blue-600)}
+.fab-chat{position:fixed;top:0;right:0;width:380px;max-width:100%;height:100%;
+  background:#fff;box-shadow:-4px 0 24px rgba(15,23,42,.12);z-index:1100;
+  display:flex;flex-direction:column;transform:translateX(100%);
+  transition:transform .3s ease;border-left:1px solid var(--s200)}
+.fab-chat.open{transform:translateX(0)}
+.fab-chat-hd{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;border-bottom:1px solid var(--s200);background:var(--s50);flex-shrink:0}
+.fab-chat-hd h3{font-size:15px;font-weight:800;color:var(--s800);margin:0;display:flex;align-items:center;text-transform:uppercase;letter-spacing:.04em}
+.fab-chat-close{width:32px;height:32px;border:none;background:transparent;
+  border-radius:var(--r6);color:var(--s500);cursor:pointer;display:flex;
+  align-items:center;justify-content:center;font-size:18px;transition:all .15s}
+.fab-chat-close:hover{background:var(--s200);color:var(--s700)}
+.fab-chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;min-height:0}
+.fab-chat-msg{max-width:85%;padding:10px 14px;border-radius:12px;font-size:14px;
+  line-height:1.5;font-family:var(--ff)}
+.fab-chat-msg.bot{background:var(--s100);color:var(--s700);align-self:flex-start;border-bottom-left-radius:4px}
+.fab-chat-msg.user{background:var(--blue-600);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.fab-chat-toast{background:#f4faf6;border-radius:var(--r8);padding:12px 18px;
+  display:flex;align-items:flex-start;gap:10px;border:1px solid rgba(82,138,106,.25);
+  border-left:4px solid var(--gn500);align-self:stretch;margin-bottom:4px}
+.fab-chat-toast .cb-icon{font-size:21px;color:var(--gn600);flex-shrink:0}
+.fab-chat-toast .cb-title{font-size:13px;font-weight:700;color:var(--gn600)}
+.fab-chat-toast .cb-sub{font-size:13px;color:var(--gn500);font-weight:500;margin-top:8px}
+.fab-chat-toast.fab-chat-toast-info{background:var(--blue-50);border:1px solid var(--blue-200);
+  border-left:6px solid var(--blue-500);border-radius:var(--r8);box-shadow:0 2px 12px rgba(59,130,246,.1);
+  align-items:flex-start}
+.fab-chat-toast.fab-chat-toast-info .cb-icon{font-size:1.25rem;color:var(--blue-600);flex-shrink:0;margin-top:1px}
+.fab-chat-toast.fab-chat-toast-info > div:not(.cb-icon){flex:1;min-width:0}
+.fab-chat-toast.fab-chat-toast-info .cb-title{font-size:13px;font-weight:700;color:var(--blue-800);line-height:1.35}
+.fab-chat-toast.fab-chat-toast-info .cb-sub{font-size:13px;font-weight:500;color:var(--blue-600);margin-top:8px;line-height:1.45}
+.fab-chat-input-wrap{display:flex;gap:8px;padding:14px 16px;border-top:1px solid var(--s200);
+  background:#fff;flex-shrink:0}
+.fab-chat-input{flex:1;height:44px;border-radius:10px;border:1px solid var(--s300);
+  padding:0 14px;font-size:14px;font-family:var(--ff);outline:none;min-width:0}
+.fab-chat-input:focus{border-color:var(--blue-400);box-shadow:0 0 0 2px rgba(59,130,246,.15)}
+.fab-chat-send{width:44px;height:44px;border-radius:10px;border:none;
+  background:var(--blue-600);color:#fff;flex-shrink:0;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:background .15s}
+.fab-chat-send:hover{background:var(--blue-700)}
+.fab-chat-actions{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 12px;flex-shrink:0}
+.fab-chat-action{background:#fff;border:1px solid var(--s200);border-radius:10px;
+  padding:8px 14px;font-size:13px;font-weight:500;color:var(--s700);font-family:var(--ff);
+  cursor:pointer;box-shadow:0 2px 8px rgba(15,23,42,.06);
+  transition:background .15s,border-color .15s,color .15s,box-shadow .15s}
+.fab-chat-action:hover{background:var(--blue-50);border-color:var(--blue-200);color:var(--blue-600);
+  box-shadow:0 2px 12px rgba(59,130,246,.12)}
+body.chat-open{overflow-x:hidden;width:calc(100vw - 380px);margin-right:380px}
+body.chat-open .content-wrap{width:100%;max-width:100%;overflow-x:hidden;transition:margin-right .3s ease}
+body.chat-open .content-wrap .nav,body.chat-open .content-wrap .steps-wrap{min-width:0;flex-shrink:0}
+body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflow-x:auto;-webkit-overflow-scrolling:touch;box-sizing:border-box}
+@media(max-width:1200px){
+  body.chat-open .p-steps{flex-shrink:0;min-width:min-content}
+  body.chat-open .p-steps-title{display:none!important}
+  body.chat-open .p-steps-link{padding:12px 6px;gap:0}
+  body.chat-open .p-steps-sep{min-width:10px}
+}
+@media(max-width:1100px){
+  body.chat-open{width:calc(100vw - 340px);margin-right:340px}
+  .fab-chat{width:340px}
+}
+@media(max-width:900px){
+  body.chat-open{width:calc(100vw - 320px);margin-right:320px}
+  .fab-chat{width:320px}
+}
+</style>
+</head>
+<body>
+<div class="content-wrap">
+<nav class="nav" aria-label="Primary">
+  <div class="brand">
+    <img src="Arganologo (2).png" alt="Argano" style="height:30px;object-fit:contain">
+    <div class="vsep" aria-hidden="true"></div>
+    <div class="brand-name">ASCEND</div>
+  </div>
+  <div class="nav-r">
+    <span class="snap-badge"><span class="sdot"></span><i class="pi pi-bolt" aria-hidden="true"></i> Run · Acme Logistics</span>
+    <div class="nav-menu-item">
+      <button type="button" class="btn-o"><i class="pi pi-cog"></i> Config</button>
+      <button type="button" class="btn-o"><i class="pi pi-building"></i> Acme Logistics</button>
+    </div>
+  </div>
+</nav>
+
+<div class="steps-wrap">
+  <div class="steps-inner">
+    <div class="p-steps" role="navigation" aria-label="Journey step">
+      <div class="p-steps-item done">
+        <span class="p-steps-link p-steps-link--static"><span class="p-steps-number"><i class="pi pi-check" aria-hidden="true"></i></span><span class="p-steps-title">Technical Assessment</span></span>
+      </div>
+      <div class="p-steps-sep"></div>
+      <div class="p-steps-item done">
+        <span class="p-steps-link p-steps-link--static"><span class="p-steps-number"><i class="pi pi-check" aria-hidden="true"></i></span><span class="p-steps-title">Migration Path Planning</span></span>
+      </div>
+      <div class="p-steps-sep"></div>
+      <div class="p-steps-item active">
+        <span class="p-steps-link p-steps-link--static" aria-current="step"><span class="p-steps-number">3</span><span class="p-steps-title">AI-Powered Orchestration</span></span>
+      </div>
+      <div class="p-steps-sep"></div>
+      <div class="p-steps-item">
+        <span class="p-steps-link p-steps-link--static"><span class="p-steps-number">4</span><span class="p-steps-title">Future-ready Cutover</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="main">
+
+  <!-- PIPELINE EXECUTION -->
+  <section class="conn-section" aria-labelledby="exec-section-h">
+    <div class="conn-section-head">
+      <h2 class="conn-section-title" id="exec-section-h">Pipeline execution</h2>
+    </div>
+    <section class="kpi-grid" aria-label="Run summary">
+      <div class="kpi">
+        <div class="kpi-head">
+          <div>
+            <div class="kpi-label">Run progress</div>
+            <div class="kpi-value" id="kpiProgress">68%</div>
+          </div>
+          <div class="kpi-icon kpi-icon--blue" aria-hidden="true"><i class="pi pi-chart-bar"></i></div>
+        </div>
+        <div class="kpi-sub" id="kpiProgressSub">Batch 7 of 12 · Wave 2</div>
+        <div class="kpi-bar-wrap"><div class="kpi-bar" id="kpiBar" style="width:68%"></div></div>
+      </div>
+      <div class="kpi kpi--hitl">
+        <div class="kpi-head">
+          <div>
+            <div class="kpi-label">Expert review pending</div>
+            <div class="kpi-value" id="kpiPending">7</div>
+          </div>
+          <div class="kpi-icon kpi-icon--or" aria-hidden="true"><i class="pi pi-user-edit"></i></div>
+        </div>
+        <div class="kpi-sub">Awaiting human decision</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-head">
+          <div>
+            <div class="kpi-label">Objects synced (24h)</div>
+            <div class="kpi-value" id="kpiObjects">18.4k</div>
+          </div>
+          <div class="kpi-icon kpi-icon--gn" aria-hidden="true"><i class="pi pi-database"></i></div>
+        </div>
+        <div class="kpi-sub">Throughput nominal</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-head">
+          <div>
+            <div class="kpi-label">Automated retry rate</div>
+            <div class="kpi-value">2.1%</div>
+          </div>
+          <div class="kpi-icon kpi-icon--sl" aria-hidden="true"><i class="pi pi-replay"></i></div>
+        </div>
+        <div class="kpi-sub">Within policy band</div>
+      </div>
+    </section>
+  </section>
+
+  <!-- HUMAN-IN-THE-LOOP REVIEW -->
+  <section class="conn-section" aria-labelledby="hitl-section-h">
+    <div class="conn-section-head">
+      <h2 class="conn-section-title" id="hitl-section-h">Human-in-the-loop review</h2>
+    </div>
+    <section class="card hitl-workbench" aria-labelledby="wb-title">
+      <div class="ch hitl-workbench__head">
+        <div class="hitl-workbench__titleblock">
+          <div class="ct" id="wb-title"><span class="acc" aria-hidden="true"></span><i class="pi pi-user-edit" aria-hidden="true"></i> Expert review workbench</div>
+          <p class="hitl-workbench__sub">Functional group review · select a group to inspect exceptions</p>
+        </div>
+        <span class="tag tag--hitl" id="queueBadge"><i class="pi pi-hourglass"></i> Action required</span>
+      </div>
+      <div class="hitl-workbench__body">
+        <div class="hitl-workbench__left">
+          <div class="hitl-group-list-header hitl-group-cols">
+            <span></span>
+            <span>Group</span>
+            <span>Objects</span>
+            <span>Wave</span>
+            <span>Status</span>
+          </div>
+          <div class="hitl-group-list" id="hitlGroupList"></div>
+        </div>
+        <div class="hitl-workbench__right" id="detailPanel">
+          <div class="hitl-pane-head"><i class="pi pi-search" style="color:var(--blue-600);font-size:14px" aria-hidden="true"></i> Group detail · expert actions</div>
+          <div class="hitl-group-detail-outer" id="hitlGroupDetail">
+            <div class="detail-empty" id="detailEmpty" style="display:flex">
+              <i class="pi pi-circle-off" aria-hidden="true"></i>
+              <span>Select a functional group on the left to review its flagged exceptions and add expert annotations.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- AUTHORIZATION -->
+  <section class="conn-section" aria-labelledby="auth-section-h">
+    <div class="conn-section-head">
+      <h2 class="conn-section-title" id="auth-section-h">Authorization</h2>
+    </div>
+    <div class="auth-split-grid">
+
+      <!-- LEFT: Activity log -->
+      <section class="card" aria-labelledby="act-h" style="display:flex;flex-direction:column">
+        <div class="ch">
+          <div class="ct"><span class="acc"></span><span id="act-h"><i class="pi pi-history"></i> Activity log</span></div>
+        </div>
+        <div class="cb" style="flex:1;overflow-y:auto;max-height:320px">
+          <ul class="activity-list" id="activityList"></ul>
+        </div>
+      </section>
+
+      <!-- RIGHT: Migration decision + CTA -->
+      <section class="card" aria-labelledby="auth-decision-h" style="display:flex;flex-direction:column">
+        <div class="ch">
+          <div class="ct"><span class="acc"></span><span id="auth-decision-h">Migration decision</span></div>
+        </div>
+        <div class="auth-summary-body" style="flex:1">
+          <div class="auth-val-row" style="justify-content:space-between">
+            <span><i class="pi pi-th-large" style="margin-right:8px;color:var(--s400)"></i>Total functional groups</span>
+            <span class="auth-count-num" style="color:var(--s700)">8</span>
+          </div>
+          <div class="auth-val-row auth-val-row--pass" style="justify-content:space-between">
+            <span><i class="pi pi-check" style="margin-right:8px"></i>Authorized</span>
+            <span id="countAuthorized" class="auth-count-num" style="color:var(--gn600)">0</span>
+          </div>
+          <div class="auth-val-row" style="justify-content:space-between;color:var(--rd600)">
+            <span><i class="pi pi-times" style="margin-right:8px"></i>Rejected</span>
+            <span id="countRejected" class="auth-count-num" style="color:var(--rd600)">0</span>
+          </div>
+          <div class="auth-val-row auth-val-row--warn" style="justify-content:space-between">
+            <span><i class="pi pi-hourglass" style="margin-right:8px"></i>Pending review</span>
+            <span id="countPending" class="auth-count-num" style="color:var(--am700)">8</span>
+          </div>
+        </div>
+        <div class="auth-proceed-footer">
+          <button type="button" class="btn-proceed" id="btnProceed" disabled>
+            <i class="pi pi-arrow-right" aria-hidden="true"></i> Authorize Migration &amp; Proceed to Cutover
+          </button>
+          <div class="auth-proceed-hint" id="proceedHintRow" role="status" aria-live="polite">
+            <i class="pi pi-info-circle" aria-hidden="true"></i>
+            <span id="proceedHint">Authorize all functional groups to enable cutover.</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </section>
+
+</main>
+</div>
+
+<div class="toast-orch" id="orchToast" role="status" aria-live="polite">
+  <i class="pi pi-check-circle toast-icon-ok" id="orchToastIcon"></i>
+  <div class="toast-orch-text">
+    <div class="toast-orch-hd" id="orchToastTitle">Success</div>
+    <div class="toast-orch-msg" id="orchToastMsg"></div>
+  </div>
+</div>
+
+<!-- Objects detail modal -->
+<div class="obj-modal-overlay" id="objModalOverlay" role="dialog" aria-modal="true" aria-labelledby="objModalTitle">
+  <div class="obj-modal">
+    <div class="obj-modal-hd">
+      <div class="obj-modal-title"><i class="pi pi-box"></i><span id="objModalTitle">Objects</span></div>
+      <button type="button" class="obj-modal-close" id="objModalClose" aria-label="Close"><i class="pi pi-times"></i></button>
+    </div>
+    <div class="obj-modal-body">
+      <table class="obj-modal-table">
+        <thead>
+          <tr>
+            <th>Object ID</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="objModalBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- FAB AI Assistant -->
+<div class="fab-ai-wrap" id="fabAiWrap">
+  <span class="fab-ai-badge" id="fabAiBadge" aria-hidden="true"></span>
+  <button type="button" class="fab-ai-btn" id="fabAiBtn" aria-label="ASCEND Assistant" aria-expanded="false">
+    <img src="Icono bombilla 24dp (2).svg" alt="" width="22" height="22" class="fab-ai-icon">
+  </button>
+  <div class="fab-ai-bubbles" id="fabAiBubbles">
+    <button type="button" class="fab-bubble">Summarize This Run's Progress</button>
+    <button type="button" class="fab-bubble">Explain Expert Gate Criteria</button>
+    <button type="button" class="fab-bubble">Why Was This Object Flagged For Review?</button>
+    <button type="button" class="fab-bubble">What Happens After All Gates Pass?</button>
+  </div>
+</div>
+
+<div class="fab-chat" id="fabChat" role="dialog" aria-label="Chat with ASCEND Assistant">
+  <div class="fab-chat-hd">
+    <h3><i class="pi pi-lightbulb" style="margin-right:8px;color:var(--or500)"></i>ASCEND Assistant</h3>
+    <button type="button" class="fab-chat-close" id="fabChatClose" aria-label="Close chat"><i class="pi pi-times"></i></button>
+  </div>
+  <div class="fab-chat-msgs" id="fabChatMsgs">
+    <div class="fab-chat-msg bot">Hi, I'm your ASCEND Assistant. How can I help with this orchestration run?</div>
+  </div>
+  <div class="fab-chat-actions" id="fabChatActions">
+    <button type="button" class="fab-chat-action">Summarize This Run's Progress</button>
+    <button type="button" class="fab-chat-action">Explain Expert Gate Criteria</button>
+    <button type="button" class="fab-chat-action">Why Was This Object Flagged For Review?</button>
+    <button type="button" class="fab-chat-action">What Happens After All Gates Pass?</button>
+  </div>
+  <div class="fab-chat-input-wrap">
+    <input type="text" class="fab-chat-input" id="fabChatInput" placeholder="Type your message…" autocomplete="off">
+    <button type="button" class="fab-chat-send" id="fabChatSend" aria-label="Send"><i class="pi pi-send"></i></button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var state={
+    selectedGroupId:null,
+    groupAnnotations:{},
+    itemAnnotations:{},
+    functionalGroups:[
+      {id:'shipping',   label:'Shipping & Dispatch',          meta:'12 objects · Wave 1', status:'pending', criticality:'critical'},
+      {id:'returns',    label:'Returns & Reverse Logistics',   meta:'9 objects · Wave 1',  status:'pending', criticality:'critical'},
+      {id:'inventory',  label:'Inventory Management',          meta:'15 objects · Wave 2', status:'pending', criticality:'high'},
+      {id:'orders',     label:'Order Management',              meta:'8 objects · Wave 2',  status:'pending', criticality:'high'},
+      {id:'finance',    label:'Finance & Billing',             meta:'6 objects · Wave 3',  status:'pending', criticality:'high'},
+      {id:'logistics',  label:'Logistics Routes',              meta:'11 objects · Wave 2', status:'pending', criticality:'medium'},
+      {id:'customers',  label:'Customer Management',           meta:'5 objects · Wave 3',  status:'pending', criticality:'medium'},
+      {id:'reporting',  label:'Reporting & Analytics',         meta:'4 objects · Wave 4',  status:'pending', criticality:'low'}
+    ],
+    items:[
+      {id:'1',groupId:'shipping',object:'INT-EDI-441 · Partner ASN',severity:'high',
+        ai:'Hold batch; suggest manual mapping for partner qualifier "XX" before interface sync.',status:'pending',
+        context:'Qualifier not present in reference data; automated mapping would breach policy INT-09.'},
+      {id:'2',groupId:'shipping',object:'CARR-009 · Carrier rate override',severity:'high',
+        ai:'Rate table mismatch detected. Platform default rate applies — override requires manual sign-off.',status:'pending',
+        context:'Client-negotiated rate not present in target carrier master. Two records affected.'},
+      {id:'3',groupId:'returns',object:'RET-990 · Return authorization rule',severity:'high',
+        ai:'RMA rule references legacy warehouse zone deprecated in target. Remap to Zone-C recommended.',status:'pending',
+        context:'Return flow blocked if zone reference unresolved. Affects 3 active carrier lanes.'},
+      {id:'4',groupId:'inventory',object:'ITEM-88421 · Velocity putaway rule',severity:'high',
+        ai:'Map to Cognitive template PTY-12; confidence 0.76 — needs expert confirmation on allocation split.',status:'pending',
+        context:'Legacy rule references deprecated zone codes. AI proposes PTY-12 with zone remap table v3.'},
+      {id:'5',groupId:'orders',object:'ORD-2241 · Backorder replenishment',severity:'medium',
+        ai:'Replenishment trigger threshold differs by 12% vs. platform default. Recommend manual alignment.',status:'pending',
+        context:'Client threshold set at 15 units; platform default is 20. Gap may cause premature triggers.'},
+      {id:'6',groupId:'finance',object:'CONV-JOB-07 · Nightly balance job',severity:'low',
+        ai:'Retry with extended timeout (model-estimated 14% failure under default SLA).',status:'pending',
+        context:'Transient lock contention on target; no data loss detected.'},
+      {id:'7',groupId:'logistics',object:'LOC-00912 · Staging lane config',severity:'medium',
+        ai:'Accept as platform-standard staging; flag one client-specific attribute for post-cutover cleanup.',status:'pending',
+        context:'Target lane exists; optional attribute "priority_hint" has no platform counterpart.'}
+    ]
+  };
+
+  var groupObjects={
+    shipping:[
+      {id:'INT-EDI-441',desc:'Partner ASN interface',type:'Integration',status:'flagged'},
+      {id:'CARR-009',desc:'Carrier rate override',type:'Config',status:'flagged'},
+      {id:'SHIP-RULE-01',desc:'Dispatch priority rule',type:'Rule',status:'migrated'},
+      {id:'SHIP-RULE-02',desc:'Split shipment logic',type:'Rule',status:'migrated'},
+      {id:'LABEL-TPL-03',desc:'Label template v3',type:'Template',status:'migrated'},
+      {id:'ZONE-MAP-08',desc:'Zone mapping table',type:'Reference',status:'migrated'},
+      {id:'CARRIER-API',desc:'Carrier API connector',type:'Integration',status:'migrated'},
+      {id:'TRACK-SVC',desc:'Tracking service config',type:'Config',status:'migrated'},
+      {id:'SHIP-SLA',desc:'SLA policy binding',type:'Policy',status:'migrated'},
+      {id:'MANIFEST-01',desc:'Manifest generation job',type:'Job',status:'migrated'},
+      {id:'DOCK-SCHED',desc:'Dock scheduling rule',type:'Rule',status:'migrated'},
+      {id:'BOL-TPL',desc:'Bill of lading template',type:'Template',status:'migrated'}
+    ],
+    returns:[
+      {id:'RET-990',desc:'Return authorization rule',type:'Rule',status:'flagged'},
+      {id:'RMA-FLOW-01',desc:'RMA workflow definition',type:'Workflow',status:'migrated'},
+      {id:'RET-ZONE-C',desc:'Return zone mapping',type:'Reference',status:'migrated'},
+      {id:'CREDIT-POL',desc:'Credit policy binding',type:'Policy',status:'migrated'},
+      {id:'RESTOCK-JOB',desc:'Restock trigger job',type:'Job',status:'migrated'},
+      {id:'INSP-RULE-02',desc:'Inspection routing rule',type:'Rule',status:'migrated'},
+      {id:'RET-LABEL',desc:'Return label template',type:'Template',status:'migrated'},
+      {id:'DISPOSE-POL',desc:'Disposal policy',type:'Policy',status:'migrated'},
+      {id:'RET-API',desc:'Returns API connector',type:'Integration',status:'migrated'}
+    ],
+    inventory:[
+      {id:'ITEM-88421',desc:'Velocity putaway rule',type:'Rule',status:'flagged'},
+      {id:'LOC-ZONE-V3',desc:'Zone remap table v3',type:'Reference',status:'migrated'},
+      {id:'PUT-TPL-12',desc:'Putaway template PTY-12',type:'Template',status:'migrated'},
+      {id:'INV-CYCLE',desc:'Cycle count schedule',type:'Job',status:'migrated'},
+      {id:'REORDER-POL',desc:'Reorder policy',type:'Policy',status:'migrated'},
+      {id:'SLOT-RULE-04',desc:'Slotting rule set 4',type:'Rule',status:'migrated'},
+      {id:'INV-ADJ-JOB',desc:'Adjustment posting job',type:'Job',status:'migrated'},
+      {id:'LOT-TRACK',desc:'Lot tracking config',type:'Config',status:'migrated'},
+      {id:'EXPIRY-RULE',desc:'Expiry rotation rule',type:'Rule',status:'migrated'},
+      {id:'WH-LAYOUT-02',desc:'Warehouse layout v2',type:'Reference',status:'migrated'},
+      {id:'PICK-WAVE',desc:'Pick wave definition',type:'Config',status:'migrated'},
+      {id:'INV-SYNC',desc:'Inventory sync connector',type:'Integration',status:'migrated'},
+      {id:'SERIAL-TRACK',desc:'Serial tracking rule',type:'Rule',status:'migrated'},
+      {id:'LOSS-POL',desc:'Loss policy binding',type:'Policy',status:'migrated'},
+      {id:'FIFO-RULE',desc:'FIFO allocation rule',type:'Rule',status:'migrated'}
+    ],
+    orders:[
+      {id:'ORD-2241',desc:'Backorder replenishment',type:'Rule',status:'flagged'},
+      {id:'ORD-FLOW-01',desc:'Order workflow definition',type:'Workflow',status:'migrated'},
+      {id:'ALLOC-RULE-3',desc:'Allocation rule set 3',status:'migrated',type:'Rule'},
+      {id:'PRICE-POL',desc:'Pricing policy binding',type:'Policy',status:'migrated'},
+      {id:'TAX-RULE-EU',desc:'EU tax rule',type:'Rule',status:'migrated'},
+      {id:'ORD-API',desc:'Order management API',type:'Integration',status:'migrated'},
+      {id:'FRAUD-CHK',desc:'Fraud check config',type:'Config',status:'migrated'},
+      {id:'SHIP-PREF',desc:'Shipping preference rule',type:'Rule',status:'migrated'}
+    ],
+    finance:[
+      {id:'CONV-JOB-07',desc:'Nightly balance job',type:'Job',status:'flagged'},
+      {id:'GL-MAP-02',desc:'GL account mapping',type:'Reference',status:'migrated'},
+      {id:'TAX-CONFIG',desc:'Tax configuration',type:'Config',status:'migrated'},
+      {id:'CURR-RULE',desc:'Currency conversion rule',type:'Rule',status:'migrated'},
+      {id:'PAY-TERM-01',desc:'Payment terms definition',type:'Config',status:'migrated'},
+      {id:'INV-GEN-JOB',desc:'Invoice generation job',type:'Job',status:'migrated'}
+    ],
+    logistics:[
+      {id:'LOC-00912',desc:'Staging lane config',type:'Config',status:'flagged'},
+      {id:'ROUTE-OPT-01',desc:'Route optimization rule',type:'Rule',status:'migrated'},
+      {id:'CARRIER-SEL',desc:'Carrier selection logic',type:'Rule',status:'migrated'},
+      {id:'HUB-MAP-03',desc:'Hub mapping reference',type:'Reference',status:'migrated'},
+      {id:'TRANSIT-POL',desc:'Transit time policy',type:'Policy',status:'migrated'},
+      {id:'CROSS-DOCK',desc:'Cross-dock rule',type:'Rule',status:'migrated'},
+      {id:'LOAD-PLAN',desc:'Load planning config',type:'Config',status:'migrated'},
+      {id:'FLEET-CFG',desc:'Fleet configuration',type:'Config',status:'migrated'},
+      {id:'GEO-ZONE-02',desc:'Geographic zone mapping',type:'Reference',status:'migrated'},
+      {id:'ETA-RULE',desc:'ETA calculation rule',type:'Rule',status:'migrated'},
+      {id:'LAST-MILE',desc:'Last mile routing rule',type:'Rule',status:'migrated'}
+    ],
+    customers:[
+      {id:'CUST-PROF-01',desc:'Customer profile schema',type:'Reference',status:'migrated'},
+      {id:'ADDR-VAL',desc:'Address validation rule',type:'Rule',status:'migrated'},
+      {id:'NOTIF-TPL',desc:'Notification template',type:'Template',status:'migrated'},
+      {id:'PREF-STORE',desc:'Preference store config',type:'Config',status:'migrated'},
+      {id:'LOYALTY-POL',desc:'Loyalty policy binding',type:'Policy',status:'migrated'}
+    ],
+    reporting:[
+      {id:'RPT-DAILY-01',desc:'Daily ops dashboard',type:'Report',status:'migrated'},
+      {id:'RPT-SLA-02',desc:'SLA compliance report',type:'Report',status:'migrated'},
+      {id:'RPT-INV-03',desc:'Inventory summary report',type:'Report',status:'migrated'},
+      {id:'ETL-SCHED',desc:'ETL schedule definition',type:'Job',status:'migrated'}
+    ]
+  };
+
+  // Modal logic
+  (function(){
+    var overlay=document.getElementById('objModalOverlay');
+    var closeBtn=document.getElementById('objModalClose');
+    var titleEl=document.getElementById('objModalTitle');
+    var bodyEl=document.getElementById('objModalBody');
+    function openModal(gid,gLabel){
+      var objs=groupObjects[gid]||[];
+      titleEl.textContent=gLabel+' — Objects ('+objs.length+')';
+      bodyEl.innerHTML=objs.map(function(o){
+        var flagged=o.status==='flagged';
+        return '<tr>'
+          +'<td style="font-weight:700;color:var(--s800);font-family:monospace;font-size:12px">'+o.id+'</td>'
+          +'<td>'+o.desc+'</td>'
+          +'<td style="color:var(--s500)">'+o.type+'</td>'
+          +'<td>'+(flagged
+            ?'<span class="tag tag--hitl" style="font-size:11px"><i class="pi pi-exclamation-circle"></i> Flagged</span>'
+            :'<span class="tag tag--ok" style="font-size:11px"><i class="pi pi-check"></i> Migrated</span>')
+          +'</td>'
+          +'</tr>';
+      }).join('');
+      overlay.classList.add('open');
+      document.body.style.overflow='hidden';
+    }
+    function closeModal(){
+      overlay.classList.remove('open');
+      document.body.style.overflow='';
+    }
+    closeBtn.addEventListener('click',closeModal);
+    overlay.addEventListener('click',function(e){if(e.target===overlay)closeModal();});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    document.getElementById('hitlGroupList').addEventListener('click',function(e){
+      var link=e.target.closest('.obj-link');
+      if(!link)return;
+      e.stopPropagation();
+      openModal(link.dataset.gid,link.dataset.label);
+    });
+  })();
+
+  var kpiPending=document.getElementById('kpiPending');
+  var kpiProgress=document.getElementById('kpiProgress');
+  var activityList=document.getElementById('activityList');
+  var toast=document.getElementById('orchToast');
+  var queueBadge=document.getElementById('queueBadge');
+
+  function severityTag(s){
+    if(s==='high')return '<span class="tag tag--danger">High</span>';
+    if(s==='medium')return '<span class="tag tag--warn">Medium</span>';
+    return '<span class="tag tag--info">Low</span>';
+  }
+
+  function statusTag(st){
+    if(st==='pending')return '<span class="tag tag--hitl"><i class="pi pi-user"></i> Awaiting expert</span>';
+    if(st==='approved')return '<span class="tag tag--ok"><i class="pi pi-check"></i> Approved</span>';
+    if(st==='rejected')return '<span class="tag tag--danger"><i class="pi pi-times"></i> Rejected</span>';
+    return '<span class="tag tag--info"><i class="pi pi-info-circle"></i> Info requested</span>';
+  }
+
+  function pendingCount(){
+    return state.items.filter(function(i){return i.status==='pending';}).length;
+  }
+
+  function showToast(msg,type){
+    var titleEl=document.getElementById('orchToastTitle');
+    var msgEl=document.getElementById('orchToastMsg');
+    var iconEl=document.getElementById('orchToastIcon');
+    var title=type==='warn'?'Warning':type==='danger'?'Error':'Success';
+    var icon=type==='warn'?'pi-exclamation-triangle':type==='danger'?'pi-times-circle':'pi-check-circle';
+    if(titleEl)titleEl.textContent=title;
+    if(msgEl)msgEl.textContent=msg;
+    if(iconEl)iconEl.className='pi '+icon+' toast-icon-ok';
+    toast.className='toast-orch show'+(type==='warn'?' is-warn':type==='danger'?' is-danger':'');
+    clearTimeout(showToast._t);
+    showToast._t=setTimeout(function(){
+      toast.classList.remove('show','is-warn','is-danger');
+    },3000);
+  }
+
+  function addActivity(text){
+    var li=document.createElement('li');
+    li.innerHTML='<i class="pi pi-circle-fill" style="font-size:7px"></i><div><div>'+text+'</div><div class="activity-meta">'+new Date().toLocaleString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',day:'2-digit',month:'short',year:'numeric',timeZone:'UTC'})+' UTC</div></div>';
+    activityList.insertBefore(li,activityList.firstChild);
+  }
+
+  function updateQueueBadge(){
+    var n=pendingCount();
+    if(n===0){
+      queueBadge.innerHTML='<i class="pi pi-check"></i> Queue clear';
+      queueBadge.className='tag tag--ok';
+    }else{
+      queueBadge.innerHTML='<i class="pi pi-hourglass"></i> Action required · '+n;
+      queueBadge.className='tag tag--hitl';
+    }
+  }
+
+  function selectGroup(gid){
+    state.selectedGroupId=gid;
+    renderGroupList();
+    renderGroupDetail();
+  }
+
+  var critLabel={'critical':'Critical','high':'High','medium':'Medium','low':'Low'};
+
+  var sevScore={high:3,medium:2,low:1,null:0};
+  var critScore={critical:4,high:3,medium:2,low:1};
+
+  function renderGroupList(){
+    var container=document.getElementById('hitlGroupList');
+    if(!container)return;
+    var sorted=state.functionalGroups.slice().sort(function(a,b){
+      var aItems=state.items.filter(function(i){return i.groupId===a.id&&i.status==='pending';});
+      var bItems=state.items.filter(function(i){return i.groupId===b.id&&i.status==='pending';});
+      var aTop=aItems.some(function(i){return i.severity==='high';})?'high'
+        :aItems.some(function(i){return i.severity==='medium';})?'medium'
+        :aItems.length>0?'low':null;
+      var bTop=bItems.some(function(i){return i.severity==='high';})?'high'
+        :bItems.some(function(i){return i.severity==='medium';})?'medium'
+        :bItems.length>0?'low':null;
+      var diff=(sevScore[bTop]||0)-(sevScore[aTop]||0);
+      if(diff!==0)return diff;
+      return critScore[b.criticality]-critScore[a.criticality];
+    });
+    container.innerHTML=sorted.map(function(g){
+      var groupItems=state.items.filter(function(i){return i.groupId===g.id;});
+      var pendingItems=groupItems.filter(function(i){return i.status==='pending';});
+      var pendingInGroup=pendingItems.length;
+      var total=groupItems.length;
+      var isSelected=state.selectedGroupId===g.id;
+      var highestSev=pendingItems.some(function(i){return i.severity==='high';})?'high'
+        :pendingItems.some(function(i){return i.severity==='medium';})?'medium'
+        :pendingItems.length>0?'low':null;
+      var statusHtml=total===0
+        ?'<span class="hitl-group-status hitl-group-status--none">No exceptions</span>'
+        :pendingInGroup===0
+          ?'<span class="hitl-group-status hitl-group-status--ok"><i class="pi pi-check-circle"></i> Cleared</span>'
+          :highestSev==='high'
+            ?'<span class="hitl-group-status hitl-group-status--danger"><i class="pi pi-exclamation-circle"></i> '+pendingInGroup+' pending · High</span>'
+            :highestSev==='medium'
+              ?'<span class="hitl-group-status hitl-group-status--warn">'+pendingInGroup+' pending · Medium</span>'
+              :'<span class="hitl-group-status" style="color:var(--s500)">'+pendingInGroup+' pending · Low</span>';
+      var metaParts=g.meta.split(' · ');
+      var objsCol=metaParts[0]||'';
+      var waveCol=(metaParts[1]||'').replace(/Wave\s*/i,'');
+      return '<div class="hitl-group-item'+(isSelected?' selected':'')+'" data-gid="'+g.id+'">'
+        +'<div class="hitl-group-cols">'
+          +'<input type="radio" class="hitl-group-radio" name="hitlGroupSelect" value="'+g.id+'"'+(isSelected?' checked':'')+' aria-label="Select '+g.label+' group" tabindex="-1">'
+          +'<div class="hitl-group-item-name">'+g.label+'</div>'
+          +'<div class="hitl-group-col-val"><button class="obj-link" data-gid="'+g.id+'" data-label="'+g.label+'">'+objsCol+'</button></div>'
+          +'<div class="hitl-group-col-val">'+waveCol+'</div>'
+          +statusHtml
+        +'</div>'
+        +'</div>';
+    }).join('');
+    kpiPending.textContent=String(pendingCount());
+    updateQueueBadge();
+  }
+
+  function renderGroupDetail(){
+    var outer=document.getElementById('hitlGroupDetail');
+    var emptyEl=document.getElementById('detailEmpty');
+    if(!outer)return;
+    var gid=state.selectedGroupId;
+    if(!gid){
+      if(emptyEl)emptyEl.style.display='flex';
+      var old=outer.querySelector('.hitl-group-detail-content');
+      if(old)old.remove();
+      return;
+    }
+    if(emptyEl)emptyEl.style.display='none';
+    var g=state.functionalGroups.find(function(x){return x.id===gid;});
+    if(!g)return;
+    var groupItems=state.items.filter(function(i){return i.groupId===gid;});
+    var pendingInGroup=groupItems.filter(function(i){return i.status==='pending';}).length;
+    var approvedInGroup=groupItems.filter(function(i){return i.status==='approved';}).length;
+    var rejectedInGroup=groupItems.filter(function(i){return i.status==='rejected'||i.status==='info';}).length;
+    var groupResolved=pendingInGroup===0&&groupItems.length>0;
+    var excHtml=groupItems.length===0
+      ?'<div style="padding:20px 2px;text-align:center;color:var(--s400);font-size:13px"><i class="pi pi-check-circle" style="font-size:1.4rem;display:block;margin-bottom:8px;color:var(--gn400)"></i>No flagged exceptions in this group.</div>'
+      :groupItems.map(function(item){
+        var objParts=item.object.split(' · ');
+        var objHead=objParts[0];
+        var objRest=objParts.slice(1).join(' · ');
+        var resolved=item.status!=='pending';
+        return '<div class="hitl-exc-card'+(resolved?' resolved':'')+'">'
+          +'<div class="hitl-exc-card-head">'
+            +severityTag(item.severity)
+            +'<div style="flex:1;min-width:0">'
+              +'<div class="hitl-exc-card-obj">'+objHead+'</div>'
+              +'<div class="hitl-exc-card-sub">'+objRest+'</div>'
+            +'</div>'
+            +(resolved?statusTag(item.status):'')
+          +'</div>'
+          +'<div class="hitl-exc-context">'+item.context+'</div>'
+          +'<div class="hitl-exc-ai"><strong>AI recommendation</strong>'+item.ai+'</div>'
+          +'</div>';
+      }).join('');
+    var groupAnnotation=state.groupAnnotations[gid]||'';
+    var groupActionHtml=groupItems.length===0?''
+      :groupResolved
+        ?'<div class="hitl-group-action-footer">'
+          +'<div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--gn600)"><i class="pi pi-check-circle"></i> Group review complete</div>'
+          +(groupAnnotation?'<div class="hitl-exc-annotation-done" style="margin-top:10px"><span class="hitl-exc-annot-label">Expert note</span><span class="hitl-exc-annot-text">'+groupAnnotation+'</span></div>':'')
+        +'</div>'
+        :'<div class="hitl-group-action-footer">'
+          +'<div class="hitl-group-annotation">'
+            +'<label class="hitl-exc-annot-label" for="grpNote-'+gid+'">Expert annotation <span style="color:var(--rd500);font-size:10px">(required to reject)</span></label>'
+            +'<textarea id="grpNote-'+gid+'" class="hitl-exc-annot-ta" rows="2" placeholder="Add justification, observations or decisions for this group…">'+groupAnnotation+'</textarea>'
+          +'</div>'
+          +'<div class="hitl-exc-actions" style="margin-top:10px">'
+            +'<button type="button" class="btn-hitl-approve" data-gaction="approve"><i class="pi pi-check"></i> Approve group</button>'
+            +'<button type="button" class="btn-hitl-reject" data-gaction="reject"><i class="pi pi-times"></i> Reject group</button>'
+            +'<button type="button" class="btn-hitl-info" data-gaction="info"><i class="pi pi-info-circle"></i> Request info</button>'
+          +'</div>'
+        +'</div>';
+    var statusPill=pendingInGroup>0
+      ?'<span class="hitl-stat-pill hitl-stat-pill--pending">'+pendingInGroup+' pending</span>'
+      :groupItems.length>0?'<span class="hitl-stat-pill hitl-stat-pill--ok">Reviewed</span>':'';
+    var existing=outer.querySelector('.hitl-group-detail-content');
+    var div=existing||document.createElement('div');
+    div.className='hitl-group-detail-content';
+    div.style.cssText='display:flex;flex-direction:column;flex:1;overflow:hidden';
+    div.innerHTML=
+      '<div class="hitl-group-detail-head">'
+        +'<div class="hitl-group-detail-title">'+g.label+'</div>'
+        +'<div class="hitl-group-detail-stats">'+statusPill+'</div>'
+      +'</div>'
+      +'<div class="hitl-group-detail-scroll">'
+        +'<div class="hitl-exc-list">'+excHtml+'</div>'
+        +groupActionHtml
+      +'</div>';
+    if(!existing)outer.appendChild(div);
+    var grpTa=div.querySelector('#grpNote-'+gid);
+    if(grpTa){
+      grpTa.onchange=function(){state.groupAnnotations[gid]=this.value;};
+      grpTa.oninput=function(){state.groupAnnotations[gid]=this.value;};
+    }
+    div.querySelectorAll('[data-gaction]').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        resolveGroup(gid,this.getAttribute('data-gaction'));
+      });
+    });
+  }
+
+  function bumpProgress(){
+    var p=parseInt(kpiProgress.textContent,10);
+    if(p<96)p=Math.min(96,p+2);
+    kpiProgress.textContent=p+'%';
+    var bar=document.getElementById('kpiBar');
+    if(bar)bar.style.width=p+'%';
+  }
+
+  function resolveGroup(gid,action){
+    var pendingItems=state.items.filter(function(i){return i.groupId===gid&&i.status==='pending';});
+    if(!pendingItems.length)return;
+    if(action==='reject'){
+      var ta=document.getElementById('grpNote-'+gid);
+      var note=(ta?ta.value.trim():'')|| (state.groupAnnotations[gid]||'').trim();
+      if(!note){showToast('Add an expert annotation before rejecting.','warn');return;}
+      state.groupAnnotations[gid]=note;
+    }
+    var g=state.functionalGroups.find(function(x){return x.id===gid;});
+    var gLabel=g?g.label:gid;
+    pendingItems.forEach(function(row){
+      if(action==='approve'){row.status='approved';}
+      else if(action==='reject'){row.status='rejected';}
+      else{row.status='info';}
+    });
+    if(action==='approve'){
+      showToast(gLabel+' · All exceptions approved.');
+      addActivity('You · Approved group <strong>'+gLabel+'</strong> · '+pendingItems.length+' exception'+(pendingItems.length===1?'':'s')+' cleared');
+      bumpProgress();
+    }else if(action==='reject'){
+      showToast(gLabel+' · Group rejected — hold pending remediation.','warn');
+      addActivity('You · Rejected group <strong>'+gLabel+'</strong>');
+    }else{
+      showToast(gLabel+' · Information requested · team notified.');
+      addActivity('You · Requested info for group <strong>'+gLabel+'</strong>');
+    }
+    renderGroupList();
+    renderGroupDetail();
+    updateAuthState();
+  }
+
+  document.getElementById('hitlGroupList').addEventListener('click',function(e){
+    var item=e.target.closest('[data-gid]');
+    if(!item)return;
+    selectGroup(item.getAttribute('data-gid'));
+  });
+
+  addActivity('System · Run <strong>R-2184</strong> started · pipeline authorized from Planning');
+  addActivity('AI · Flagged <strong>ITEM-88421</strong> for expert review (confidence &lt; policy threshold)');
+
+  function groupStatusTag(st){
+    if(st==='authorized')return '<span class="tag tag--ok"><i class="pi pi-check"></i> Authorized</span>';
+    if(st==='rejected')return '<span class="tag tag--danger"><i class="pi pi-times"></i> Rejected</span>';
+    return '<span class="tag tag--hitl"><i class="pi pi-hourglass"></i> Pending</span>';
+  }
+
+
+  function updateAuthState(){
+    var pending=pendingCount();
+    // Derive group-level status from HITL items: authorized = all items approved, rejected = any rejected, else pending
+    var nAuthorized=state.functionalGroups.filter(function(g){
+      var gi=state.items.filter(function(i){return i.groupId===g.id;});
+      return gi.length>0&&gi.every(function(i){return i.status==='approved';});
+    }).length;
+    var nRejected=state.functionalGroups.filter(function(g){
+      var gi=state.items.filter(function(i){return i.groupId===g.id;});
+      return gi.some(function(i){return i.status==='rejected';});
+    }).length;
+    var nPendingGroups=state.functionalGroups.filter(function(g){
+      var gi=state.items.filter(function(i){return i.groupId===g.id;});
+      return gi.length===0||gi.some(function(i){return i.status==='pending';});
+    }).length;
+    var allAuthorized=pending===0&&nRejected===0&&nPendingGroups===0;
+    var anyRejected=nRejected>0;
+    // summary counts (right card + left card mirror)
+    var cp=document.getElementById('countPending');
+    var ca=document.getElementById('countAuthorized');
+    var cr=document.getElementById('countRejected');
+    if(cp)cp.textContent=String(nPendingGroups);
+    if(ca)ca.textContent=String(nAuthorized);
+    if(cr)cr.textContent=String(nRejected);
+    var valHitl=document.getElementById('valHitl');
+    if(valHitl){
+      if(pending===0){
+        valHitl.className='auth-val-row auth-val-row--pass';
+        valHitl.innerHTML='<i class="pi pi-check-circle"></i> HITL review complete';
+      }else{
+        valHitl.className='auth-val-row auth-val-row--warn';
+        valHitl.innerHTML='<i class="pi pi-hourglass"></i> HITL review pending ('+pending+')';
+      }
+    }
+    var valAudit=document.getElementById('valAudit');
+    if(valAudit){
+      if(allAuthorized){
+        valAudit.className='auth-val-row auth-val-row--pass';
+        valAudit.innerHTML='<i class="pi pi-check-circle"></i> Audit trail signed off';
+      }else{
+        valAudit.className='auth-val-row auth-val-row--warn';
+        valAudit.innerHTML='<i class="pi pi-hourglass"></i> Audit trail pending';
+      }
+    }
+    var authStatusTag=document.getElementById('authStatusTag');
+    if(authStatusTag){
+      if(anyRejected){
+        authStatusTag.className='tag tag--danger';
+        authStatusTag.innerHTML='<i class="pi pi-times"></i> Rejected';
+      }else if(allAuthorized){
+        authStatusTag.className='tag tag--ok';
+        authStatusTag.innerHTML='<i class="pi pi-check"></i> Authorized';
+      }else{
+        authStatusTag.className='tag tag--hitl';
+        authStatusTag.innerHTML='<i class="pi pi-hourglass"></i> Pending';
+      }
+    }
+    var btn=document.getElementById('btnProceed');
+    var hint=document.getElementById('proceedHint');
+    if(!btn)return;
+    if(allAuthorized){
+      btn.disabled=false;
+      if(hint)hint.textContent='All exceptions cleared — ready to proceed to cutover.';
+    }else{
+      btn.disabled=true;
+      if(anyRejected){
+        if(hint)hint.textContent='One or more groups have rejected exceptions. Review before proceeding.';
+      }else if(pending>0){
+        if(hint)hint.textContent=pending+' HITL item'+(pending===1?'':'s')+' pending. Resolve the workbench first.';
+      }else{
+        if(hint)hint.textContent='Complete HITL review for all functional groups to enable cutover.';
+      }
+    }
+  }
+
+  document.getElementById('btnProceed').addEventListener('click',function(){
+    var toast=document.getElementById('orchToast');
+    if(toast){showToast('Migration authorized — advancing to Future-ready Cutover…');}
+  });
+
+  renderGroupList();
+  renderGroupDetail();
+  updateAuthState();
+})();
+
+/* FAB AI Assistant */
+(function(){
+  var CONTEXT_TITLE = 'AI-Powered Orchestration:';
+  var CONTEXT_SUB = 'The pipeline runs automatically. Expert gates pause execution at flagged objects — review each one in the workbench, then approve or reject to resume.';
+  var btn = document.getElementById('fabAiBtn');
+  var chat = document.getElementById('fabChat');
+  var chatClose = document.getElementById('fabChatClose');
+  var chatMsgs = document.getElementById('fabChatMsgs');
+  var chatInput = document.getElementById('fabChatInput');
+  var chatSend = document.getElementById('fabChatSend');
+  var bubbles = document.getElementById('fabAiBubbles');
+  var badge = document.getElementById('fabAiBadge');
+  var wrap = document.getElementById('fabAiWrap');
+  if (!btn || !chat) return;
+  var notificationShown = false;
+  var showedContextToast = false;
+
+  function assistantReplyFor(prompt) {
+    if (!prompt) return '';
+    if (prompt.indexOf('Summarize This Run') === 0) {
+      return 'Run R-2184 is active. The AI pipeline is processing objects autonomously. Expert gates are paused pending your review of flagged exceptions. Approve or reject each item in the workbench to let the pipeline advance to the next checkpoint.';
+    }
+    if (prompt.indexOf('Explain Expert Gate') === 0) {
+      return 'Expert gates trigger when model confidence falls below the policy threshold. Each flagged object requires a human decision — approve to accept the AI recommendation, reject to hold the batch for remediation, or request more info to escalate.';
+    }
+    if (prompt.indexOf('Why Was This Object Flagged') === 0) {
+      return 'Objects are flagged when the AI confidence score is below the policy threshold, when data anomalies are detected, or when the object type requires mandatory human sign-off per your migration governance policy.';
+    }
+    if (prompt.indexOf('What Happens After All Gates Pass') === 0) {
+      return 'Once all expert gates are cleared, the pipeline resumes autonomous execution and advances to the next checkpoint. A full audit trail of every decision is captured for compliance and rollback purposes.';
+    }
+    return '';
+  }
+
+  function insertContextToast() {
+    if (!chatMsgs || chatMsgs.querySelector('[data-hitl-context-info]')) return;
+    var toast = document.createElement('div');
+    toast.className = 'fab-chat-toast fab-chat-toast-info';
+    toast.setAttribute('data-hitl-context-info', '1');
+    toast.setAttribute('role', 'status');
+    toast.innerHTML = '<div class="cb-icon"><i class="pi pi-info-circle" aria-hidden="true"></i></div><div><div class="cb-title">' + CONTEXT_TITLE + '</div><div class="cb-sub">' + CONTEXT_SUB + '</div></div>';
+    chatMsgs.insertBefore(toast, chatMsgs.firstChild);
+  }
+
+  function onChatOpened() {
+    if (showedContextToast) return;
+    showedContextToast = true;
+    setTimeout(insertContextToast, 400);
+  }
+
+  setTimeout(function() {
+    if (badge) { badge.classList.add('show'); }
+    if (wrap) { wrap.classList.add('has-notification'); }
+    if (btn) {
+      btn.classList.add('shake');
+      setTimeout(function() { btn.classList.remove('shake'); }, 500);
+    }
+    if (navigator.vibrate) { navigator.vibrate([100, 50, 100]); }
+    notificationShown = true;
+  }, 5000);
+
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    chat.classList.add('open');
+    document.body.classList.add('chat-open');
+    btn.setAttribute('aria-expanded', 'true');
+    if (chatInput) chatInput.focus();
+    if (badge && notificationShown) { badge.classList.remove('show'); }
+    if (wrap) { wrap.classList.remove('has-notification'); }
+    onChatOpened();
+  });
+
+  if (chatClose) chatClose.addEventListener('click', function() {
+    chat.classList.remove('open');
+    document.body.classList.remove('chat-open');
+    btn.setAttribute('aria-expanded', 'false');
+  });
+
+  function addMsg(text, isUser) {
+    var div = document.createElement('div');
+    div.className = 'fab-chat-msg ' + (isUser ? 'user' : 'bot');
+    div.textContent = text;
+    if (chatMsgs) {
+      chatMsgs.appendChild(div);
+      chatMsgs.scrollTop = chatMsgs.scrollHeight;
+    }
+  }
+
+  function sendMsg() {
+    var txt = (chatInput && chatInput.value) ? chatInput.value.trim() : '';
+    if (!txt) return;
+    addMsg(txt, true);
+    if (chatInput) chatInput.value = '';
+    var smart = assistantReplyFor(txt);
+    addMsg(smart || 'I received your message. In a real implementation, this would connect to an AI backend.', false);
+  }
+
+  if (chatSend) chatSend.addEventListener('click', sendMsg);
+  if (chatInput) chatInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') { e.preventDefault(); sendMsg(); } });
+
+  if (bubbles) bubbles.querySelectorAll('.fab-bubble').forEach(function(b) {
+    b.addEventListener('click', function(e) {
+      e.stopPropagation();
+      chat.classList.add('open');
+      document.body.classList.add('chat-open');
+      btn.setAttribute('aria-expanded', 'true');
+      onChatOpened();
+      var t = this.textContent || '';
+      addMsg(t, true);
+      var r = assistantReplyFor(t);
+      addMsg(r || ('Processing: ' + t + '…'), false);
+    });
+  });
+
+  var chatActions = document.getElementById('fabChatActions');
+  if (chatActions) chatActions.querySelectorAll('.fab-chat-action').forEach(function(b) {
+    b.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (!chat.classList.contains('open')) {
+        chat.classList.add('open');
+        document.body.classList.add('chat-open');
+        btn.setAttribute('aria-expanded', 'true');
+        onChatOpened();
+      }
+      var t = this.textContent || '';
+      addMsg(t, true);
+      var r = assistantReplyFor(t);
+      addMsg(r || ('Processing: ' + t + '…'), false);
+      if (chatMsgs) chatMsgs.scrollTop = chatMsgs.scrollHeight;
+    });
+  });
+})();
+</script>
+</body>
+</html>
