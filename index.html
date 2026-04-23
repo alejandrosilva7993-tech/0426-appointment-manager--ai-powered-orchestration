@@ -87,7 +87,7 @@ body{font-family:var(--ff);background:linear-gradient(160deg,#dce9f7 0%,#b8cfe5 
 .pill-hitmap i{color:var(--or500)}
 
 /* KPI ROW */
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 @media(max-width:960px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){.kpi-grid{grid-template-columns:1fr}}
 .kpi{background:var(--s0);border:1px solid var(--s200);border-radius:var(--r12);padding:14px 18px;box-shadow:var(--sh1);display:flex;flex-direction:column;gap:0}
@@ -329,7 +329,7 @@ body{font-family:var(--ff);background:linear-gradient(160deg,#dce9f7 0%,#b8cfe5 
 .hitl-stat-pill--pending{background:var(--am50);color:var(--am700);border:1px solid rgba(204,136,0,.25)}
 .hitl-stat-pill--ok{background:var(--gn50);color:var(--gn600);border:1px solid rgba(82,138,106,.25)}
 .hitl-stat-pill--rej{background:var(--rd50);color:var(--rd600);border:1px solid rgba(217,64,64,.2)}
-/* OBJECTS MODAL */
+/* ARTIFACTS MODAL */
 .obj-modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:2000;align-items:center;justify-content:center}
 .obj-modal-overlay.open{display:flex}
 .obj-modal{background:#fff;border-radius:var(--r12);box-shadow:0 20px 60px rgba(15,23,42,.22);width:560px;max-width:calc(100vw - 32px);max-height:80vh;display:flex;flex-direction:column;overflow:hidden}
@@ -542,22 +542,12 @@ body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflo
       <div class="kpi">
         <div class="kpi-head">
           <div>
-            <div class="kpi-label">Objects synced (24h)</div>
+            <div class="kpi-label">Artifacts synced (24h)</div>
             <div class="kpi-value" id="kpiObjects">18.4k</div>
           </div>
           <div class="kpi-icon kpi-icon--gn" aria-hidden="true"><i class="pi pi-database"></i></div>
         </div>
         <div class="kpi-sub">Throughput nominal</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-head">
-          <div>
-            <div class="kpi-label">Automated retry rate</div>
-            <div class="kpi-value">2.1%</div>
-          </div>
-          <div class="kpi-icon kpi-icon--sl" aria-hidden="true"><i class="pi pi-replay"></i></div>
-        </div>
-        <div class="kpi-sub">Within policy band</div>
       </div>
     </section>
   </section>
@@ -580,9 +570,9 @@ body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflo
           <div class="hitl-group-list-header hitl-group-cols">
             <span></span>
             <span>Group</span>
-            <span>Objects</span>
+            <span>Artifacts</span>
             <span>Wave</span>
-            <span>Status</span>
+            <span>Priority</span>
           </div>
           <div class="hitl-group-list" id="hitlGroupList"></div>
         </div>
@@ -664,21 +654,21 @@ body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflo
   </div>
 </div>
 
-<!-- Objects detail modal -->
+<!-- Artifacts detail modal -->
 <div class="obj-modal-overlay" id="objModalOverlay" role="dialog" aria-modal="true" aria-labelledby="objModalTitle">
   <div class="obj-modal">
     <div class="obj-modal-hd">
-      <div class="obj-modal-title"><i class="pi pi-box"></i><span id="objModalTitle">Objects</span></div>
+      <div class="obj-modal-title"><i class="pi pi-box"></i><span id="objModalTitle">Artifacts</span></div>
       <button type="button" class="obj-modal-close" id="objModalClose" aria-label="Close"><i class="pi pi-times"></i></button>
     </div>
     <div class="obj-modal-body">
       <table class="obj-modal-table">
         <thead>
           <tr>
-            <th>Object ID</th>
+            <th>Artifact ID</th>
             <th>Description</th>
             <th>Type</th>
-            <th>Status</th>
+            <th>Impact score</th>
           </tr>
         </thead>
         <tbody id="objModalBody"></tbody>
@@ -728,14 +718,14 @@ body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflo
     groupAnnotations:{},
     itemAnnotations:{},
     functionalGroups:[
-      {id:'shipping',   label:'Shipping & Dispatch',          meta:'12 objects · Wave 1', status:'pending', criticality:'critical'},
-      {id:'returns',    label:'Returns & Reverse Logistics',   meta:'9 objects · Wave 1',  status:'pending', criticality:'critical'},
-      {id:'inventory',  label:'Inventory Management',          meta:'15 objects · Wave 2', status:'pending', criticality:'high'},
-      {id:'orders',     label:'Order Management',              meta:'8 objects · Wave 2',  status:'pending', criticality:'high'},
-      {id:'finance',    label:'Finance & Billing',             meta:'6 objects · Wave 3',  status:'pending', criticality:'high'},
-      {id:'logistics',  label:'Logistics Routes',              meta:'11 objects · Wave 2', status:'pending', criticality:'medium'},
-      {id:'customers',  label:'Customer Management',           meta:'5 objects · Wave 3',  status:'pending', criticality:'medium'},
-      {id:'reporting',  label:'Reporting & Analytics',         meta:'4 objects · Wave 4',  status:'pending', criticality:'low'}
+      {id:'shipping',   label:'Shipping & Dispatch',          meta:'12 artifacts · Wave 1', status:'pending', criticality:'critical'},
+      {id:'returns',    label:'Returns & Reverse Logistics',   meta:'9 artifacts · Wave 1',  status:'pending', criticality:'critical'},
+      {id:'inventory',  label:'Inventory Management',          meta:'15 artifacts · Wave 2', status:'pending', criticality:'high'},
+      {id:'orders',     label:'Order Management',              meta:'8 artifacts · Wave 2',  status:'pending', criticality:'high'},
+      {id:'finance',    label:'Finance & Billing',             meta:'6 artifacts · Wave 3',  status:'pending', criticality:'high'},
+      {id:'logistics',  label:'Logistics Routes',              meta:'11 artifacts · Wave 2', status:'pending', criticality:'medium'},
+      {id:'customers',  label:'Customer Management',           meta:'5 artifacts · Wave 3',  status:'pending', criticality:'medium'},
+      {id:'reporting',  label:'Reporting & Analytics',         meta:'4 artifacts · Wave 4',  status:'pending', criticality:'low'}
     ],
     items:[
       {id:'1',groupId:'shipping',object:'INT-EDI-441 · Partner ASN',severity:'high',
@@ -764,90 +754,90 @@ body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflo
 
   var groupObjects={
     shipping:[
-      {id:'INT-EDI-441',desc:'Partner ASN interface',type:'Integration',status:'flagged'},
-      {id:'CARR-009',desc:'Carrier rate override',type:'Config',status:'flagged'},
-      {id:'SHIP-RULE-01',desc:'Dispatch priority rule',type:'Rule',status:'migrated'},
-      {id:'SHIP-RULE-02',desc:'Split shipment logic',type:'Rule',status:'migrated'},
-      {id:'LABEL-TPL-03',desc:'Label template v3',type:'Template',status:'migrated'},
-      {id:'ZONE-MAP-08',desc:'Zone mapping table',type:'Reference',status:'migrated'},
-      {id:'CARRIER-API',desc:'Carrier API connector',type:'Integration',status:'migrated'},
-      {id:'TRACK-SVC',desc:'Tracking service config',type:'Config',status:'migrated'},
-      {id:'SHIP-SLA',desc:'SLA policy binding',type:'Policy',status:'migrated'},
-      {id:'MANIFEST-01',desc:'Manifest generation job',type:'Job',status:'migrated'},
-      {id:'DOCK-SCHED',desc:'Dock scheduling rule',type:'Rule',status:'migrated'},
-      {id:'BOL-TPL',desc:'Bill of lading template',type:'Template',status:'migrated'}
+      {id:'INT-EDI-441',desc:'Partner ASN interface',type:'Integration',impact:9},
+      {id:'CARR-009',desc:'Carrier rate override',type:'Config',impact:8},
+      {id:'CARRIER-API',desc:'Carrier API connector',type:'Integration',impact:7},
+      {id:'SHIP-SLA',desc:'SLA policy binding',type:'Policy',impact:6},
+      {id:'SHIP-RULE-01',desc:'Dispatch priority rule',type:'Rule',impact:6},
+      {id:'SHIP-RULE-02',desc:'Split shipment logic',type:'Rule',impact:5},
+      {id:'ZONE-MAP-08',desc:'Zone mapping table',type:'Reference',impact:5},
+      {id:'TRACK-SVC',desc:'Tracking service config',type:'Config',impact:4},
+      {id:'LABEL-TPL-03',desc:'Label template v3',type:'Template',impact:4},
+      {id:'MANIFEST-01',desc:'Manifest generation job',type:'Job',impact:3},
+      {id:'DOCK-SCHED',desc:'Dock scheduling rule',type:'Rule',impact:3},
+      {id:'BOL-TPL',desc:'Bill of lading template',type:'Template',impact:2}
     ],
     returns:[
-      {id:'RET-990',desc:'Return authorization rule',type:'Rule',status:'flagged'},
-      {id:'RMA-FLOW-01',desc:'RMA workflow definition',type:'Workflow',status:'migrated'},
-      {id:'RET-ZONE-C',desc:'Return zone mapping',type:'Reference',status:'migrated'},
-      {id:'CREDIT-POL',desc:'Credit policy binding',type:'Policy',status:'migrated'},
-      {id:'RESTOCK-JOB',desc:'Restock trigger job',type:'Job',status:'migrated'},
-      {id:'INSP-RULE-02',desc:'Inspection routing rule',type:'Rule',status:'migrated'},
-      {id:'RET-LABEL',desc:'Return label template',type:'Template',status:'migrated'},
-      {id:'DISPOSE-POL',desc:'Disposal policy',type:'Policy',status:'migrated'},
-      {id:'RET-API',desc:'Returns API connector',type:'Integration',status:'migrated'}
+      {id:'RET-990',desc:'Return authorization rule',type:'Rule',impact:9},
+      {id:'RMA-FLOW-01',desc:'RMA workflow definition',type:'Workflow',impact:7},
+      {id:'CREDIT-POL',desc:'Credit policy binding',type:'Policy',impact:6},
+      {id:'RET-API',desc:'Returns API connector',type:'Integration',impact:6},
+      {id:'RET-ZONE-C',desc:'Return zone mapping',type:'Reference',impact:5},
+      {id:'INSP-RULE-02',desc:'Inspection routing rule',type:'Rule',impact:5},
+      {id:'RESTOCK-JOB',desc:'Restock trigger job',type:'Job',impact:4},
+      {id:'DISPOSE-POL',desc:'Disposal policy',type:'Policy',impact:3},
+      {id:'RET-LABEL',desc:'Return label template',type:'Template',impact:2}
     ],
     inventory:[
-      {id:'ITEM-88421',desc:'Velocity putaway rule',type:'Rule',status:'flagged'},
-      {id:'LOC-ZONE-V3',desc:'Zone remap table v3',type:'Reference',status:'migrated'},
-      {id:'PUT-TPL-12',desc:'Putaway template PTY-12',type:'Template',status:'migrated'},
-      {id:'INV-CYCLE',desc:'Cycle count schedule',type:'Job',status:'migrated'},
-      {id:'REORDER-POL',desc:'Reorder policy',type:'Policy',status:'migrated'},
-      {id:'SLOT-RULE-04',desc:'Slotting rule set 4',type:'Rule',status:'migrated'},
-      {id:'INV-ADJ-JOB',desc:'Adjustment posting job',type:'Job',status:'migrated'},
-      {id:'LOT-TRACK',desc:'Lot tracking config',type:'Config',status:'migrated'},
-      {id:'EXPIRY-RULE',desc:'Expiry rotation rule',type:'Rule',status:'migrated'},
-      {id:'WH-LAYOUT-02',desc:'Warehouse layout v2',type:'Reference',status:'migrated'},
-      {id:'PICK-WAVE',desc:'Pick wave definition',type:'Config',status:'migrated'},
-      {id:'INV-SYNC',desc:'Inventory sync connector',type:'Integration',status:'migrated'},
-      {id:'SERIAL-TRACK',desc:'Serial tracking rule',type:'Rule',status:'migrated'},
-      {id:'LOSS-POL',desc:'Loss policy binding',type:'Policy',status:'migrated'},
-      {id:'FIFO-RULE',desc:'FIFO allocation rule',type:'Rule',status:'migrated'}
+      {id:'ITEM-88421',desc:'Velocity putaway rule',type:'Rule',impact:8},
+      {id:'INV-SYNC',desc:'Inventory sync connector',type:'Integration',impact:7},
+      {id:'LOC-ZONE-V3',desc:'Zone remap table v3',type:'Reference',impact:6},
+      {id:'REORDER-POL',desc:'Reorder policy',type:'Policy',impact:6},
+      {id:'LOT-TRACK',desc:'Lot tracking config',type:'Config',impact:5},
+      {id:'SERIAL-TRACK',desc:'Serial tracking rule',type:'Rule',impact:5},
+      {id:'PUT-TPL-12',desc:'Putaway template PTY-12',type:'Template',impact:5},
+      {id:'FIFO-RULE',desc:'FIFO allocation rule',type:'Rule',impact:5},
+      {id:'EXPIRY-RULE',desc:'Expiry rotation rule',type:'Rule',impact:4},
+      {id:'SLOT-RULE-04',desc:'Slotting rule set 4',type:'Rule',impact:4},
+      {id:'PICK-WAVE',desc:'Pick wave definition',type:'Config',impact:4},
+      {id:'INV-CYCLE',desc:'Cycle count schedule',type:'Job',impact:4},
+      {id:'LOSS-POL',desc:'Loss policy binding',type:'Policy',impact:4},
+      {id:'WH-LAYOUT-02',desc:'Warehouse layout v2',type:'Reference',impact:3},
+      {id:'INV-ADJ-JOB',desc:'Adjustment posting job',type:'Job',impact:3}
     ],
     orders:[
-      {id:'ORD-2241',desc:'Backorder replenishment',type:'Rule',status:'flagged'},
-      {id:'ORD-FLOW-01',desc:'Order workflow definition',type:'Workflow',status:'migrated'},
-      {id:'ALLOC-RULE-3',desc:'Allocation rule set 3',status:'migrated',type:'Rule'},
-      {id:'PRICE-POL',desc:'Pricing policy binding',type:'Policy',status:'migrated'},
-      {id:'TAX-RULE-EU',desc:'EU tax rule',type:'Rule',status:'migrated'},
-      {id:'ORD-API',desc:'Order management API',type:'Integration',status:'migrated'},
-      {id:'FRAUD-CHK',desc:'Fraud check config',type:'Config',status:'migrated'},
-      {id:'SHIP-PREF',desc:'Shipping preference rule',type:'Rule',status:'migrated'}
+      {id:'ORD-2241',desc:'Backorder replenishment',type:'Rule',impact:7},
+      {id:'ORD-API',desc:'Order management API',type:'Integration',impact:7},
+      {id:'PRICE-POL',desc:'Pricing policy binding',type:'Policy',impact:6},
+      {id:'ORD-FLOW-01',desc:'Order workflow definition',type:'Workflow',impact:6},
+      {id:'FRAUD-CHK',desc:'Fraud check config',type:'Config',impact:5},
+      {id:'ALLOC-RULE-3',desc:'Allocation rule set 3',type:'Rule',impact:5},
+      {id:'TAX-RULE-EU',desc:'EU tax rule',type:'Rule',impact:4},
+      {id:'SHIP-PREF',desc:'Shipping preference rule',type:'Rule',impact:3}
     ],
     finance:[
-      {id:'CONV-JOB-07',desc:'Nightly balance job',type:'Job',status:'flagged'},
-      {id:'GL-MAP-02',desc:'GL account mapping',type:'Reference',status:'migrated'},
-      {id:'TAX-CONFIG',desc:'Tax configuration',type:'Config',status:'migrated'},
-      {id:'CURR-RULE',desc:'Currency conversion rule',type:'Rule',status:'migrated'},
-      {id:'PAY-TERM-01',desc:'Payment terms definition',type:'Config',status:'migrated'},
-      {id:'INV-GEN-JOB',desc:'Invoice generation job',type:'Job',status:'migrated'}
+      {id:'GL-MAP-02',desc:'GL account mapping',type:'Reference',impact:6},
+      {id:'CONV-JOB-07',desc:'Nightly balance job',type:'Job',impact:5},
+      {id:'TAX-CONFIG',desc:'Tax configuration',type:'Config',impact:5},
+      {id:'CURR-RULE',desc:'Currency conversion rule',type:'Rule',impact:5},
+      {id:'PAY-TERM-01',desc:'Payment terms definition',type:'Config',impact:4},
+      {id:'INV-GEN-JOB',desc:'Invoice generation job',type:'Job',impact:3}
     ],
     logistics:[
-      {id:'LOC-00912',desc:'Staging lane config',type:'Config',status:'flagged'},
-      {id:'ROUTE-OPT-01',desc:'Route optimization rule',type:'Rule',status:'migrated'},
-      {id:'CARRIER-SEL',desc:'Carrier selection logic',type:'Rule',status:'migrated'},
-      {id:'HUB-MAP-03',desc:'Hub mapping reference',type:'Reference',status:'migrated'},
-      {id:'TRANSIT-POL',desc:'Transit time policy',type:'Policy',status:'migrated'},
-      {id:'CROSS-DOCK',desc:'Cross-dock rule',type:'Rule',status:'migrated'},
-      {id:'LOAD-PLAN',desc:'Load planning config',type:'Config',status:'migrated'},
-      {id:'FLEET-CFG',desc:'Fleet configuration',type:'Config',status:'migrated'},
-      {id:'GEO-ZONE-02',desc:'Geographic zone mapping',type:'Reference',status:'migrated'},
-      {id:'ETA-RULE',desc:'ETA calculation rule',type:'Rule',status:'migrated'},
-      {id:'LAST-MILE',desc:'Last mile routing rule',type:'Rule',status:'migrated'}
+      {id:'LOC-00912',desc:'Staging lane config',type:'Config',impact:7},
+      {id:'ROUTE-OPT-01',desc:'Route optimization rule',type:'Rule',impact:6},
+      {id:'CARRIER-SEL',desc:'Carrier selection logic',type:'Rule',impact:6},
+      {id:'LAST-MILE',desc:'Last mile routing rule',type:'Rule',impact:5},
+      {id:'ETA-RULE',desc:'ETA calculation rule',type:'Rule',impact:5},
+      {id:'HUB-MAP-03',desc:'Hub mapping reference',type:'Reference',impact:5},
+      {id:'CROSS-DOCK',desc:'Cross-dock rule',type:'Rule',impact:5},
+      {id:'TRANSIT-POL',desc:'Transit time policy',type:'Policy',impact:4},
+      {id:'GEO-ZONE-02',desc:'Geographic zone mapping',type:'Reference',impact:4},
+      {id:'LOAD-PLAN',desc:'Load planning config',type:'Config',impact:4},
+      {id:'FLEET-CFG',desc:'Fleet configuration',type:'Config',impact:3}
     ],
     customers:[
-      {id:'CUST-PROF-01',desc:'Customer profile schema',type:'Reference',status:'migrated'},
-      {id:'ADDR-VAL',desc:'Address validation rule',type:'Rule',status:'migrated'},
-      {id:'NOTIF-TPL',desc:'Notification template',type:'Template',status:'migrated'},
-      {id:'PREF-STORE',desc:'Preference store config',type:'Config',status:'migrated'},
-      {id:'LOYALTY-POL',desc:'Loyalty policy binding',type:'Policy',status:'migrated'}
+      {id:'CUST-PROF-01',desc:'Customer profile schema',type:'Reference',impact:5},
+      {id:'ADDR-VAL',desc:'Address validation rule',type:'Rule',impact:4},
+      {id:'LOYALTY-POL',desc:'Loyalty policy binding',type:'Policy',impact:4},
+      {id:'NOTIF-TPL',desc:'Notification template',type:'Template',impact:3},
+      {id:'PREF-STORE',desc:'Preference store config',type:'Config',impact:2}
     ],
     reporting:[
-      {id:'RPT-DAILY-01',desc:'Daily ops dashboard',type:'Report',status:'migrated'},
-      {id:'RPT-SLA-02',desc:'SLA compliance report',type:'Report',status:'migrated'},
-      {id:'RPT-INV-03',desc:'Inventory summary report',type:'Report',status:'migrated'},
-      {id:'ETL-SCHED',desc:'ETL schedule definition',type:'Job',status:'migrated'}
+      {id:'RPT-DAILY-01',desc:'Daily ops dashboard',type:'Report',impact:4},
+      {id:'RPT-SLA-02',desc:'SLA compliance report',type:'Report',impact:4},
+      {id:'RPT-INV-03',desc:'Inventory summary report',type:'Report',impact:3},
+      {id:'ETL-SCHED',desc:'ETL schedule definition',type:'Job',impact:3}
     ]
   };
 
@@ -859,17 +849,17 @@ body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflo
     var bodyEl=document.getElementById('objModalBody');
     function openModal(gid,gLabel){
       var objs=groupObjects[gid]||[];
-      titleEl.textContent=gLabel+' — Objects ('+objs.length+')';
+      titleEl.textContent=gLabel+' — Artifacts ('+objs.length+')';
       bodyEl.innerHTML=objs.map(function(o){
-        var flagged=o.status==='flagged';
+        var sc=o.impact||0;
+        var scoreColor=sc>=8?'var(--rd600)':sc>=5?'var(--am600)':'var(--s500)';
+        var scoreBg=sc>=8?'var(--rd50)':sc>=5?'var(--am50)':'var(--s100)';
+        var scoreBorder=sc>=8?'rgba(217,64,64,.25)':sc>=5?'rgba(204,136,0,.3)':'var(--s200)';
         return '<tr>'
           +'<td style="font-weight:700;color:var(--s800);font-family:monospace;font-size:12px">'+o.id+'</td>'
           +'<td>'+o.desc+'</td>'
           +'<td style="color:var(--s500)">'+o.type+'</td>'
-          +'<td>'+(flagged
-            ?'<span class="tag tag--hitl" style="font-size:11px"><i class="pi pi-exclamation-circle"></i> Flagged</span>'
-            :'<span class="tag tag--ok" style="font-size:11px"><i class="pi pi-check"></i> Migrated</span>')
-          +'</td>'
+          +'<td><span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:800;background:'+scoreBg+';color:'+scoreColor+';border:1px solid '+scoreBorder+'">'+sc+'/10</span></td>'
           +'</tr>';
       }).join('');
       overlay.classList.add('open');
@@ -1237,8 +1227,6 @@ body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflo
 
 /* FAB AI Assistant */
 (function(){
-  var CONTEXT_TITLE = 'AI-Powered Orchestration:';
-  var CONTEXT_SUB = 'The pipeline runs automatically. Expert gates pause execution at flagged objects — review each one in the workbench, then approve or reject to resume.';
   var btn = document.getElementById('fabAiBtn');
   var chat = document.getElementById('fabChat');
   var chatClose = document.getElementById('fabChatClose');
@@ -1249,19 +1237,17 @@ body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflo
   var badge = document.getElementById('fabAiBadge');
   var wrap = document.getElementById('fabAiWrap');
   if (!btn || !chat) return;
-  var notificationShown = false;
-  var showedContextToast = false;
 
   function assistantReplyFor(prompt) {
     if (!prompt) return '';
     if (prompt.indexOf('Summarize This Run') === 0) {
-      return 'Run R-2184 is active. The AI pipeline is processing objects autonomously. Expert gates are paused pending your review of flagged exceptions. Approve or reject each item in the workbench to let the pipeline advance to the next checkpoint.';
+      return 'Run R-2184 is active. The AI pipeline is processing artifacts autonomously. Expert gates are paused pending your review of flagged exceptions. Approve or reject each item in the workbench to let the pipeline advance to the next checkpoint.';
     }
     if (prompt.indexOf('Explain Expert Gate') === 0) {
       return 'Expert gates trigger when model confidence falls below the policy threshold. Each flagged object requires a human decision — approve to accept the AI recommendation, reject to hold the batch for remediation, or request more info to escalate.';
     }
     if (prompt.indexOf('Why Was This Object Flagged') === 0) {
-      return 'Objects are flagged when the AI confidence score is below the policy threshold, when data anomalies are detected, or when the object type requires mandatory human sign-off per your migration governance policy.';
+      return 'Artifacts are flagged when the AI confidence score is below the policy threshold, when data anomalies are detected, or when the artifact type requires mandatory human sign-off per your migration governance policy.';
     }
     if (prompt.indexOf('What Happens After All Gates Pass') === 0) {
       return 'Once all expert gates are cleared, the pipeline resumes autonomous execution and advances to the next checkpoint. A full audit trail of every decision is captured for compliance and rollback purposes.';
@@ -1269,42 +1255,12 @@ body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflo
     return '';
   }
 
-  function insertContextToast() {
-    if (!chatMsgs || chatMsgs.querySelector('[data-hitl-context-info]')) return;
-    var toast = document.createElement('div');
-    toast.className = 'fab-chat-toast fab-chat-toast-info';
-    toast.setAttribute('data-hitl-context-info', '1');
-    toast.setAttribute('role', 'status');
-    toast.innerHTML = '<div class="cb-icon"><i class="pi pi-info-circle" aria-hidden="true"></i></div><div><div class="cb-title">' + CONTEXT_TITLE + '</div><div class="cb-sub">' + CONTEXT_SUB + '</div></div>';
-    chatMsgs.insertBefore(toast, chatMsgs.firstChild);
-  }
-
-  function onChatOpened() {
-    if (showedContextToast) return;
-    showedContextToast = true;
-    setTimeout(insertContextToast, 400);
-  }
-
-  setTimeout(function() {
-    if (badge) { badge.classList.add('show'); }
-    if (wrap) { wrap.classList.add('has-notification'); }
-    if (btn) {
-      btn.classList.add('shake');
-      setTimeout(function() { btn.classList.remove('shake'); }, 500);
-    }
-    if (navigator.vibrate) { navigator.vibrate([100, 50, 100]); }
-    notificationShown = true;
-  }, 5000);
-
   btn.addEventListener('click', function(e) {
     e.preventDefault();
     chat.classList.add('open');
     document.body.classList.add('chat-open');
     btn.setAttribute('aria-expanded', 'true');
     if (chatInput) chatInput.focus();
-    if (badge && notificationShown) { badge.classList.remove('show'); }
-    if (wrap) { wrap.classList.remove('has-notification'); }
-    onChatOpened();
   });
 
   if (chatClose) chatClose.addEventListener('click', function() {
@@ -1341,7 +1297,6 @@ body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflo
       chat.classList.add('open');
       document.body.classList.add('chat-open');
       btn.setAttribute('aria-expanded', 'true');
-      onChatOpened();
       var t = this.textContent || '';
       addMsg(t, true);
       var r = assistantReplyFor(t);
@@ -1357,7 +1312,6 @@ body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflo
         chat.classList.add('open');
         document.body.classList.add('chat-open');
         btn.setAttribute('aria-expanded', 'true');
-        onChatOpened();
       }
       var t = this.textContent || '';
       addMsg(t, true);
