@@ -262,7 +262,7 @@ body{font-family:var(--ff);background:linear-gradient(160deg,#dce9f7 0%,#b8cfe5 
 /* HITL GROUP SELECTOR (left panel) */
 .hitl-group-list{display:flex;flex-direction:column;flex:1;overflow-y:auto}
 /* group list as grid table */
-.hitl-group-cols{display:grid;grid-template-columns:16px 1fr 80px 44px 160px;gap:0 16px;align-items:center}
+.hitl-group-cols{display:grid;grid-template-columns:16px 1fr 80px 44px 160px auto;gap:0 16px;align-items:center}
 .hitl-group-list-header{padding:7px 18px;border-bottom:2px solid var(--s200);background:var(--s50)}
 .hitl-group-list-header span{font-size:10.5px;font-weight:700;color:var(--s400);text-transform:uppercase;letter-spacing:.05em}
 .hitl-group-list-header span:nth-child(3),.hitl-group-list-header span:nth-child(4){text-align:center}
@@ -371,8 +371,18 @@ body{font-family:var(--ff);background:linear-gradient(160deg,#dce9f7 0%,#b8cfe5 
 .toast-orch.is-warn .toast-orch-msg{color:#854d0e}
 .toast-orch.is-danger .toast-orch-msg{color:#991b1b}
 
+/* ASK AI INLINE BUTTONS (same pattern as Migration Path Planning) */
+.btn-ai-section{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;
+  border-radius:20px;border:1px solid rgba(59,130,246,.3);
+  background:var(--blue-50);color:var(--blue-600);
+  font-size:11px;font-weight:700;font-family:var(--ff);cursor:pointer;
+  transition:all .15s;white-space:nowrap}
+.btn-ai-section:hover{background:var(--blue-100);border-color:var(--blue-400);box-shadow:0 0 0 2px rgba(59,130,246,.1)}
+.btn-ai-icon{width:14px;height:14px;object-fit:contain;flex-shrink:0;
+  filter:brightness(0) saturate(100%) invert(24%) sepia(96%) saturate(1200%) hue-rotate(214deg) brightness(95%)}
+
 /* FAB AI Assistant */
-.fab-ai-wrap{position:fixed;top:130px;right:24px;z-index:1000;display:flex;flex-direction:column;
+.fab-ai-wrap{position:fixed;top:115px;right:24px;z-index:1000;display:flex;flex-direction:column;
   align-items:flex-end;gap:4px;pointer-events:none;width:min-content}
 .fab-ai-badge{position:absolute;top:-4px;right:-4px;width:18px;height:18px;z-index:1;
   border-radius:50%;background:var(--gn500);border:2px solid #fff;
@@ -561,18 +571,22 @@ body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflo
       <div class="ch hitl-workbench__head">
         <div class="hitl-workbench__titleblock">
           <div class="ct" id="wb-title"><span class="acc" aria-hidden="true"></span><i class="pi pi-user-edit" aria-hidden="true"></i> Expert review workbench</div>
-          <p class="hitl-workbench__sub">Functional group review · select a group to inspect exceptions</p>
+          <p class="hitl-workbench__sub">Functional group review · select a functional group to inspect exceptions</p>
         </div>
-        <span class="tag tag--hitl" id="queueBadge"><i class="pi pi-hourglass"></i> Action required</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <button type="button" class="btn-ai-section" onclick="askAiForSection('HITL Workbench')"><img src="Icono bombilla 24dp (2).svg" class="btn-ai-icon" alt=""> Ask AI</button>
+          <span class="tag tag--hitl" id="queueBadge"><i class="pi pi-hourglass"></i> Action required</span>
+        </div>
       </div>
       <div class="hitl-workbench__body">
         <div class="hitl-workbench__left">
           <div class="hitl-group-list-header hitl-group-cols">
             <span></span>
-            <span>Group</span>
+            <span>Functional Group</span>
             <span>Artifacts</span>
             <span>Wave</span>
             <span>Priority</span>
+            <span></span>
           </div>
           <div class="hitl-group-list" id="hitlGroupList"></div>
         </div>
@@ -600,6 +614,7 @@ body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflo
       <section class="card" aria-labelledby="act-h" style="display:flex;flex-direction:column">
         <div class="ch">
           <div class="ct"><span class="acc"></span><span id="act-h"><i class="pi pi-history"></i> Activity log</span></div>
+          <button type="button" class="btn-ai-section" onclick="askAiForSection('Activity Log')"><img src="Icono bombilla 24dp (2).svg" class="btn-ai-icon" alt=""> Ask AI</button>
         </div>
         <div class="cb" style="flex:1;overflow-y:auto;max-height:320px">
           <ul class="activity-list" id="activityList"></ul>
@@ -986,11 +1001,12 @@ body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflo
       var waveCol=(metaParts[1]||'').replace(/Wave\s*/i,'');
       return '<div class="hitl-group-item'+(isSelected?' selected':'')+'" data-gid="'+g.id+'">'
         +'<div class="hitl-group-cols">'
-          +'<input type="radio" class="hitl-group-radio" name="hitlGroupSelect" value="'+g.id+'"'+(isSelected?' checked':'')+' aria-label="Select '+g.label+' group" tabindex="-1">'
+          +'<input type="radio" class="hitl-group-radio" name="hitlGroupSelect" value="'+g.id+'"'+(isSelected?' checked':'')+' aria-label="Select '+g.label+' functional group" tabindex="-1">'
           +'<div class="hitl-group-item-name">'+g.label+'</div>'
           +'<div class="hitl-group-col-val"><button class="obj-link" data-gid="'+g.id+'" data-label="'+g.label+'">'+objsCol+'</button></div>'
           +'<div class="hitl-group-col-val">'+waveCol+'</div>'
           +statusHtml
+          +'<div style="text-align:right"><button type="button" class="btn-ai-section" onclick="event.stopPropagation();askAiForSection(\''+g.label.replace(/'/g,"\\'")+'\')" tabindex="-1"><img src="Icono bombilla 24dp (2).svg" class="btn-ai-icon" alt=""> Ask AI</button></div>'
         +'</div>'
         +'</div>';
     }).join('');
@@ -1110,14 +1126,14 @@ body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflo
     });
     if(action==='approve'){
       showToast(gLabel+' · All exceptions approved.');
-      addActivity('You · Approved group <strong>'+gLabel+'</strong> · '+pendingItems.length+' exception'+(pendingItems.length===1?'':'s')+' cleared');
+      addActivity('You · Approved functional group <strong>'+gLabel+'</strong> · '+pendingItems.length+' exception'+(pendingItems.length===1?'':'s')+' cleared');
       bumpProgress();
     }else if(action==='reject'){
       showToast(gLabel+' · Group rejected — hold pending remediation.','warn');
-      addActivity('You · Rejected group <strong>'+gLabel+'</strong>');
+      addActivity('You · Rejected functional group <strong>'+gLabel+'</strong>');
     }else{
       showToast(gLabel+' · Information requested · team notified.');
-      addActivity('You · Requested info for group <strong>'+gLabel+'</strong>');
+      addActivity('You · Requested info for functional group <strong>'+gLabel+'</strong>');
     }
     renderGroupList();
     renderGroupDetail();
@@ -1130,6 +1146,12 @@ body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflo
     selectGroup(item.getAttribute('data-gid'));
   });
 
+  // History from Migration Path Planning (screen 2) — oldest first so they sink to bottom of the log
+  addActivity('System · Source DB connected: <strong>BY-WMS-LEGACY-PROD</strong> · legacy-db.acme.internal:1433 · WMS_CORE_2019');
+  addActivity('System · Target DB connected: <strong>BY-COGNITIVE-QA</strong> · cognitive-db.acme.internal:1433 · WMS_COG_2026');
+  addActivity('User · Functional groups selected: <strong>Inventory</strong> (312 artifacts), <strong>Shipping</strong> (428), <strong>Wave Mgmt</strong> (196), <strong>Labor Mgmt</strong> (158) · 4 groups · 1,094 artifacts · 14 wks est.');
+  addActivity('Planning · <strong>Pipeline authorized</strong> → AI-Powered Orchestration step unlocked');
+  // Current run events
   addActivity('System · Run <strong>R-2184</strong> started · pipeline authorized from Planning');
   addActivity('AI · Flagged <strong>ITEM-88421</strong> for expert review (confidence &lt; policy threshold)');
 
@@ -1224,6 +1246,45 @@ body.chat-open .steps-wrap{width:100%!important;max-width:100%!important;overflo
   renderGroupDetail();
   updateAuthState();
 })();
+
+/* ASK AI FOR SECTION (inline buttons — same pattern as Migration Path Planning) */
+function askAiForSection(sectionName){
+  var chat=document.getElementById('fabChat');
+  var chatMsgs=document.getElementById('fabChatMsgs');
+  var chatInput=document.getElementById('fabChatInput');
+  if(!chat||!chatMsgs)return;
+  chat.classList.add('open');
+  document.body.classList.add('chat-open');
+  document.getElementById('fabAiBtn').setAttribute('aria-expanded','true');
+  var q='Explain the "'+sectionName+'" section and its implications for this migration run.';
+  var msg=document.createElement('div');
+  msg.className='fab-chat-msg user';
+  msg.textContent=q;
+  chatMsgs.appendChild(msg);
+  chatMsgs.scrollTop=chatMsgs.scrollHeight;
+  setTimeout(function(){
+    var replies={
+      'Pipeline Execution':'The pipeline execution section shows real-time progress for run R-2184. Batch 7 of 12 is active in Wave 2. The AI is processing artifacts autonomously — expert gates pause execution until each flagged exception is reviewed and resolved.',
+      'HITL Workbench':'The HITL (Human-in-the-Loop) workbench lists functional groups with flagged exceptions that exceed the AI confidence threshold. Select a functional group to review its exceptions, add annotations, and approve or reject. All decisions are recorded in the activity log.',
+      'Activity Log':'The activity log captures every event in chronological order: system events, AI flags, and expert decisions. Entries from Migration Path Planning (database connections and functional group selection) are shown at the bottom as the historical baseline for this run.',
+      'Migration Decision':'The migration decision panel tracks authorization progress by functional group. All groups must be reviewed and none rejected before the Authorize Migration & Proceed to Cutover button is enabled.',
+      'Shipping & Dispatch':'Shipping & Dispatch is a Wave 1 critical group with 12 artifacts. Two exceptions are flagged: a partner EDI qualifier mismatch (INT-EDI-441) and a carrier rate override conflict (CARR-009). Both require expert sign-off before the batch can proceed.',
+      'Returns & Reverse Logistics':'Returns & Reverse Logistics is Wave 1 critical. The flagged exception (RET-990) involves a return authorization rule referencing a deprecated warehouse zone. Remapping to Zone-C is recommended before approving.',
+      'Inventory Management':'Inventory Management is a Wave 2 high-priority group. The AI flagged a velocity putaway rule (ITEM-88421) where confidence is 0.76 — below the policy threshold. Expert confirmation on the allocation split to template PTY-12 is required.',
+      'Order Management':'Order Management (Wave 2, high) has a backorder replenishment trigger (ORD-2241) where the client threshold differs by 12% from the platform default. Manual alignment is recommended.',
+      'Finance & Billing':'Finance & Billing (Wave 3, high) has a nightly balance job (CONV-JOB-07) with a transient lock contention issue. No data loss detected — retry with extended timeout is the AI recommendation.',
+      'Logistics Routes':'Logistics Routes (Wave 2, medium) has a staging lane config (LOC-00912) with an optional client attribute that has no platform counterpart. Accept as platform-standard and flag for post-cutover cleanup.',
+      'Customer Management':'Customer Management (Wave 3, medium) has no flagged exceptions. All artifacts are within confidence thresholds and can be approved without expert review.',
+      'Reporting & Analytics':'Reporting & Analytics (Wave 4, low) has no flagged exceptions. This group can be approved and scheduled for the final wave without blocking the cutover decision.'
+    };
+    var resp=document.createElement('div');
+    resp.className='fab-chat-msg bot';
+    resp.textContent=replies[sectionName]||'In a live environment, this would provide detailed AI insights for the "'+sectionName+'" section based on current run data.';
+    chatMsgs.appendChild(resp);
+    chatMsgs.scrollTop=chatMsgs.scrollHeight;
+  },600);
+  if(chatInput)chatInput.focus();
+}
 
 /* FAB AI Assistant */
 (function(){
